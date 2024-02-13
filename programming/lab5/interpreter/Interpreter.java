@@ -60,6 +60,14 @@ public class Interpreter
 			String inputString = this.consoleScanner.next();
 			String[] tokens = inputString.split(" ");
 			
+			String commandName = tokens[0];
+			
+			
+			if (this.availableCommands.keySet().contains(commandName))
+			{
+				this.availableCommands.get(commandName).execute();
+			}
+			
 		}
 
 	}
