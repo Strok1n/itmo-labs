@@ -1,6 +1,6 @@
 package base;
 
-public class LabWork
+public class LabWork implements Comparable<LabWork>
 {
 	
 	private Integer id; // != null, > 0, unique, auto generation
@@ -23,5 +23,19 @@ public class LabWork
 		this.tunedInWorks = tunedInWorks;
 		this.difficulty = difficulty;
 		this.discipline = discipline;
+	}
+	
+	
+	
+	@Override
+	public int compareTo(LabWork other)
+	{
+		return (other.id - this.id);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.name + this.difficulty.toString();
 	}
 }

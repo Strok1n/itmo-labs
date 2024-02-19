@@ -14,7 +14,7 @@ public class Interpreter
 {
 	private Map<String, Command> availableCommands;
 	private Scanner consoleScanner;
-	private Map<String, LabWork> baseCollection;
+	private Map<LabWork, String> baseMap;
 	
 	private InputStream inputStream;
 	private PrintStream outputStream;
@@ -31,7 +31,7 @@ public class Interpreter
 		this.consoleScanner = new Scanner(System.in);
 		
 		this.availableCommands = new HashMap<String, Command>();
-		this.baseCollection = new TreeMap<String, LabWork>();
+		this.baseMap = new TreeMap<LabWork, String>();
 		
 		Help help = new Help();
 		Info info = new Info();
@@ -91,27 +91,18 @@ public class Interpreter
 			
 			String commandName = tokens[0];
 			
-
-		
+			
 			if (this.availableCommands.keySet().contains(commandName))
 			{
+				this.availableCommands.get(commandName).setBaseMap(baseMap);
 				
-				if (tokens.length > 1 && 
-				this.availableCommands.get(commandName) instanceof CommandWithArguments)
-				{
-					((CommandWithArguments) 
-					this.availableCommands.get(commandName)).setArguments(
+				if (tokens.length > 1)
+					this.availableCommands.get(commandName).setArguments(
 					Arrays.copyOfRange(tokens, 1, tokens.length - 1));
-				}
-				
-				if (this.availableCommands.get(commandName) instanceof CommandWithIOStreams)
-				{
-					((CommandWithIOStreams) 
-					this.availableCommands.get(commandName)).setIOStreams(
-					this.consoleScanner, this.outputStream);
-				}
 				
 				
+				this.availableCommands.get(commandName)
+				.setIOStreams(this.consoleScanner, this.outputStream);
 				
 				
 				this.availableCommands.get(commandName).execute();

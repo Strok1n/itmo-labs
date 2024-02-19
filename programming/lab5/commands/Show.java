@@ -16,7 +16,7 @@ public class Show extends Command
 	@Override
 	public void execute()
 	{
-		
+		System.out.println(this.baseMap.keySet());
 	}
 	
 }
