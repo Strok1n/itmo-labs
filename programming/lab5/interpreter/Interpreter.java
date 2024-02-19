@@ -4,8 +4,9 @@ package interpreter;
 import java.util.*;
 import commands.*;
 import java.io.*;
+import base.*;
 
-import static java.lang.System.*;
+//import static java.lang.System.*;
 
 
 
@@ -13,7 +14,10 @@ public class Interpreter
 {
 	private Map<String, Command> availableCommands;
 	private Scanner consoleScanner;
+	private Map<String, LabWork> baseCollection;
 	
+	private InputStream inputStream;
+	private PrintStream outputStream;
 
 
 
@@ -21,26 +25,52 @@ public class Interpreter
 
 	public Interpreter()
 	{
+		
+		this.inputStream = System.in;
+		this.outputStream = System.out;
+		this.consoleScanner = new Scanner(System.in);
+		
 		this.availableCommands = new HashMap<String, Command>();
-		this.availableCommands.put("help", new Help());
-		this.availableCommands.put("info", new Info());
-		this.availableCommands.put("show", new Show());
-		this.availableCommands.put("insert", new Insert());
-		this.availableCommands.put("update", new Update());
-		this.availableCommands.put("remove_key", new RemoveKey());
-		this.availableCommands.put("clear", new Clear());
-		this.availableCommands.put("save", new Save());
-		this.availableCommands.put("execute_script", new ExecuteScript());
-		this.availableCommands.put("exit", new Exit());
-		this.availableCommands.put("remove_lower", new RemoveLower());
-		this.availableCommands.put("replace_if_lower", new ReplaceIfLower());
-		this.availableCommands.put("remove_lower_key", new RemoveLowerKey());
-		this.availableCommands.put("average_of_minimal_point", new AverageOfMinimalPoint());
-		this.availableCommands.put("print_unique_discipline", new PrintUniqueDiscipline());
-		this.availableCommands.put("print_field_descending_difficulty ", new PrintFieldDescendingDifficulty());
+		this.baseCollection = new TreeMap<String, LabWork>();
 		
+		Help help = new Help();
+		Info info = new Info();
+		Show show = new Show();
+		Insert insert = new Insert();
+		Update update = new Update();
+		RemoveKey removeKey = new RemoveKey();
+		Clear clear = new Clear();
+		Save save = new Save();
+		ExecuteScript executeScript = new ExecuteScript();
+		Exit exit = new Exit();
+		RemoveLower removeLower = new RemoveLower();
+		ReplaceIfLower replaceIfLower = new ReplaceIfLower();
+		RemoveLowerKey removeLowerKey = new RemoveLowerKey();
+		AverageOfMinimalPoint averageOfMinimalPoint = new AverageOfMinimalPoint();
+		PrintUniqueDiscipline printUniqueDiscipline = new PrintUniqueDiscipline();
+		PrintFieldDescendingDifficulty printFieldDescendingDifficulty = new PrintFieldDescendingDifficulty();
 		
-		this.consoleScanner = new Scanner(in);
+		this.availableCommands.put("help", help);
+		this.availableCommands.put("info", info);
+		this.availableCommands.put("show", show);
+		this.availableCommands.put("insert", insert);
+		this.availableCommands.put("update", update);
+		this.availableCommands.put("remove_key", removeKey);
+		this.availableCommands.put("clear", clear);
+		this.availableCommands.put("save", save);
+		this.availableCommands.put("execute_script", executeScript);
+		this.availableCommands.put("exit", exit);
+		this.availableCommands.put("remove_lower", removeLower);
+		this.availableCommands.put("replace_if_lower", removeLowerKey);
+		this.availableCommands.put("remove_lower_key", averageOfMinimalPoint);
+		this.availableCommands.put("average_of_minimal_point", averageOfMinimalPoint);
+		this.availableCommands.put("print_unique_discipline", printUniqueDiscipline);
+		this.availableCommands.put("print_field_descending_difficulty ", printFieldDescendingDifficulty);
+		
+		help.setAvailableCommands( Arrays.copyOf( 
+		this.availableCommands.values().toArray(), 
+		this.availableCommands.size(), Command[].class ) );
+		
 	}
 	
 	public Command putCommand(String commandName, Command command)
@@ -48,24 +78,47 @@ public class Interpreter
 		return this.availableCommands.put(commandName, command);
 	}
 	
-	
-	
+
 	
 	public void handleInput()
 	{
 		boolean exit = false;
 		while (!exit)
 		{
-			out.println("Enter the command:");
+			this.outputStream.println("Enter the command:");
 			String inputString = this.consoleScanner.next();
 			String[] tokens = inputString.split(" ");
 			
 			String commandName = tokens[0];
 			
-			
+
+		
 			if (this.availableCommands.keySet().contains(commandName))
 			{
+				
+				if (tokens.length > 1 && 
+				this.availableCommands.get(commandName) instanceof CommandWithArguments)
+				{
+					((CommandWithArguments) 
+					this.availableCommands.get(commandName)).setArguments(
+					Arrays.copyOfRange(tokens, 1, tokens.length - 1));
+				}
+				
+				if (this.availableCommands.get(commandName) instanceof CommandWithIOStreams)
+				{
+					((CommandWithIOStreams) 
+					this.availableCommands.get(commandName)).setIOStreams(
+					this.consoleScanner, this.outputStream);
+				}
+				
+				
+				
+				
 				this.availableCommands.get(commandName).execute();
+			}
+			else
+			{
+				this.outputStream.println("Unknown command: " + commandName);
 			}
 			
 		}

@@ -3,12 +3,25 @@ package base;
 public class LabWork
 {
 	
-	private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private Integer minimalPoint; //Поле не может быть null, Значение поля должно быть больше 0
+	private Integer id; // != null, > 0, unique, auto generation
+    private String name; // != null, != ""
+    private Coordinates coordinates; // != null
+    private java.time.ZonedDateTime creationDate; // != null, auto generation
+    private Integer minimalPoint; // != null, > 0
     private long tunedInWorks;
-    private Difficulty difficulty; //Поле может быть null
-    private Discipline discipline; //Поле может быть null
+    private Difficulty difficulty; // != null
+    private Discipline discipline; // != null
+	
+	public LabWork( int id, String name, Coordinates coordinates, int minimalPoint, 
+	long tunedInWorks, Difficulty difficulty, Discipline discipline)
+	{
+		this.id = id;
+		this.name = name;
+		this.coordinates = coordinates;
+		this.creationDate = java.time.ZonedDateTime.now();
+		this.minimalPoint = minimalPoint;
+		this.tunedInWorks = tunedInWorks;
+		this.difficulty = difficulty;
+		this.discipline = discipline;
+	}
 }

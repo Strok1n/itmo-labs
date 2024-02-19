@@ -13,12 +13,6 @@ public class InterpreterDemonstration
 				Interpreter interpreter = new Interpreter();
 				
 				
-				interpreter.putCommand("help", new Help());
-				
-				
-				
-				
-				
 				
 				
 				interpreter.handleInput();
