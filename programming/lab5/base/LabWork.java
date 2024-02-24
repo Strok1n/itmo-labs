@@ -1,5 +1,7 @@
 package base;
 
+import java.lang.reflect.*;
+
 public class LabWork implements Comparable<LabWork>
 {
 	
@@ -11,6 +13,8 @@ public class LabWork implements Comparable<LabWork>
     private long tunedInWorks;
     private Difficulty difficulty; // != null
     private Discipline discipline; // != null
+	
+	public LabWork() {}
 	
 	public LabWork( int id, String name, Coordinates coordinates, int minimalPoint, 
 	long tunedInWorks, Difficulty difficulty, Discipline discipline)
@@ -25,7 +29,10 @@ public class LabWork implements Comparable<LabWork>
 		this.discipline = discipline;
 	}
 	
-	
+	public int getId()
+	{
+		return this.id;
+	}
 	
 	@Override
 	public int compareTo(LabWork other)
@@ -36,6 +43,21 @@ public class LabWork implements Comparable<LabWork>
 	@Override
 	public String toString()
 	{
-		return this.name + this.difficulty.toString();
+		String s = "{\n";
+		try
+		{
+			for (Field field : this.getClass().getDeclaredFields())
+				s += "\t\"" + field.getName() + "\": " + field.get(this) + ",\n";
+		}
+		catch(Exception exception)
+		{
+		}
+		return s + "}";
+		
+		//return "{\n" +  
+		//"\t\"id\": " + this.name + "\n" + 
+		////"\t\"name\": " + this.name + "\n" + 
+		//"\t\"coordinates\": " + this.coordinates + "\n" + 
+		//"}";
 	}
 }

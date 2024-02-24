@@ -104,7 +104,7 @@ public class Interpreter
 				this.availableCommands.get(commandName)
 				.setIOStreams(this.consoleScanner, this.outputStream);
 				
-				
+
 				this.availableCommands.get(commandName).execute();
 			}
 			else

@@ -4,17 +4,88 @@ import interpreter.Command;
 import base.*;
 import java.io.*;
 import java.util.*;
+import java.lang.reflect.*;
+import util.*;
+import java.util.function.*;
 
 public class Insert extends Command
 {
+	private Map<Field, Predicate<Field>> fieldValidators;
+	
+	
 	public Insert()
 	{
 		this.help = "insert: add new element to the collection";
+		
+		this.fieldValidators = new HashMap<Field, Predicate<Object>>();
+		
+		fieldValidators.put( LabWork.class.getDeclaredField("name"), 
+			(name) -> ((name != null) && (name != "")) );
+		fieldValidators.put( LabWork.class.getDeclaredField("name"), 
+			(name) -> ((name != null) && (name != "")) );
+		
 	}
+	
+	
+	private boolean isPrimitiveOrWrapperOrString(){}
+	
+	
+	
+	private <T> void handleInput(LabWork labWork, Field field, 
+	Predicate<T> fieldValidator, String onErrorMessage)
+	{
+		boolean isInputIncorrect = true;
+		String input = "";
+		
+		while (isInputIncorrect)
+		{
+			this.outputStream.println("Enter the " + field.getName() + " of the " 
+			+ field.getDeclaringClass().getName() + ":" );
+			if (field.getType().equals(Integer.class) || 
+				field.getType().equals(Float.class) || 
+				field.getType().equals(Double.class) || 
+				field.getType().equals(Byte.class) || 
+				field.getType().equals(Short.class) || 
+				field.getType().equals(Long.class) || 
+				field.getType().equals(Boolean.class) || 
+				field.getType().equals(Character.class) ||
+				field.getType().equals(String.class) || 
+				field.getType().isPrimitive() )
+			{
+				input = this.scanner.next();
+				// check field and set value.
+			}
+			else
+			{
+				
+			}
+			
+			if ( !fieldValidator(input) )
+				outputStream.println(onErrorMessage);
+			else
+			{
+			
+			}
+				
+		}
+	}
+	
+	
+	
 	
 	@Override
 	public void execute()
 	{
+		LabWork labWork = new LabWork();
+		
+		for (Field field : LabWork.class.getDeclaredFields())
+		{
+			//InputHandler.handleInput( field );
+			this.handleInput(labWork, field, );
+		}
+		
+		
+		
 		String name = null;
 		float x = 0.0f;
 		long y = 0;
@@ -157,9 +228,21 @@ public class Insert extends Command
 			}
 		}
 		
-		int id = 0;
+		int maxId = 0;
 		
-		LabWork labWork = new LabWork(
+		
+		for (LabWork labWork : this.baseMap.keySet())
+			if ( maxId < labWork.getId() )
+				maxId = labWork.getId();
+		
+		int id = 1 + maxId;
+		
+	
+		System.out.println("id: " + id);
+		
+
+		
+		this.baseMap.put(new LabWork(
 			id,
 			name,
 			new Coordinates(x, y),
@@ -167,9 +250,7 @@ public class Insert extends Command
 			tunedInWorks,
 			difficulty,
 			new Discipline(disciplineName, disciplineLabsCount)
-		);
-		
-		this.baseMap.put(labWork, "0");
+		), "");
 		
 	}
 	

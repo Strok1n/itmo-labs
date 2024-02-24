@@ -16,7 +16,8 @@ public class Info extends Command
 	@Override
 	public void execute()
 	{
-		
+		this.outputStream.println("Type of the collection: " + this.baseMap.getClass().getTypeName() + 
+		"\n" + "Date of the collection initialization: " );
 	}
 	
 }

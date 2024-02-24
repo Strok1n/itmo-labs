@@ -1,5 +1,7 @@
 package base;
 
+import java.lang.reflect.*;
+
 public class Discipline
 {
     private String name; // != null, != ""
@@ -9,5 +11,20 @@ public class Discipline
 	{
 		this.name = name;
 		this.labsCount = labsCount;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String s = "{\n";
+		try
+		{
+			for (Field field : this.getClass().getDeclaredFields())
+				s += "\t\"" + field.getName() + "\": " + field.get(this) + ",\n";
+		}
+		catch(Exception exception)
+		{
+		}
+		return s + "}";
 	}
 }

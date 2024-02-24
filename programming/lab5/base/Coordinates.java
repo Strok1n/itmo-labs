@@ -1,5 +1,7 @@
 package base;
 
+import java.lang.reflect.*;
+
 public class Coordinates
 {
     private float x;
@@ -9,5 +11,20 @@ public class Coordinates
 	{
 		this.x = x;
 		this.y = y;
+	}
+	
+	@Override
+	public String toString()
+	{
+		String s = "{\n";
+		try
+		{
+			for (Field field : this.getClass().getDeclaredFields())
+				s += "\t\"" + field.getName() + "\": " + field.get(this) + ",\n";
+		}
+		catch(Exception exception)
+		{
+		}
+		return s + "}";
 	}
 }
