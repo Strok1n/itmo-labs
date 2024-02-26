@@ -7,6 +7,8 @@ public class Coordinates
     private float x;
     private long y; // > -161
 	
+	public Coordinates(){}
+	
 	public Coordinates(float x, long y)
 	{
 		this.x = x;

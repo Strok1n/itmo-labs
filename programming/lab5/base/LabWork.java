@@ -14,7 +14,10 @@ public class LabWork implements Comparable<LabWork>
     private Difficulty difficulty; // != null
     private Discipline discipline; // != null
 	
-	public LabWork() {}
+	public LabWork() {
+		this.coordinates = new Coordinates();
+		this.discipline = new Discipline();
+	}
 	
 	public LabWork( int id, String name, Coordinates coordinates, int minimalPoint, 
 	long tunedInWorks, Difficulty difficulty, Discipline discipline)
