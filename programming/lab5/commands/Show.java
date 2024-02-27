@@ -17,8 +17,10 @@ public class Show extends Command
 	public void execute()
 	{
 		
-		for (LabWork labWork : this.baseMap.keySet())
+		for (LabWork labWork : this.baseCollection.getBaseCollection())
 			this.outputStream.println(labWork);
+		if (this.baseCollection.getBaseCollection().isEmpty())
+			this.outputStream.println("The collection is empty");
 	}
 	
 }

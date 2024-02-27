@@ -14,7 +14,11 @@ public class Interpreter
 {
 	private Map<String, Command> availableCommands;
 	private Scanner consoleScanner;
+	
 	private Map<LabWork, String> baseMap;
+	private Collection baseCollection;
+	
+	private java.time.ZonedDateTime collectionInitializationDate;
 	
 	private InputStream inputStream;
 	private PrintStream outputStream;
@@ -23,7 +27,7 @@ public class Interpreter
 
 
 
-	public Interpreter()
+	public Interpreter() throws Exception
 	{
 		
 		this.inputStream = System.in;
@@ -31,14 +35,23 @@ public class Interpreter
 		this.consoleScanner = new Scanner(System.in);
 		
 		this.availableCommands = new HashMap<String, Command>();
+		
+		
 		this.baseMap = new TreeMap<LabWork, String>();
+
+		
+		this.baseCollection = new Collection();
+		this.baseCollection.setBaseCollection( new HashSet<LabWork>() );
+		this.baseCollection.setCollectionInitializationDate(java.time.ZonedDateTime.now());
+
+
 		
 		Help help = new Help();
 		Info info = new Info();
 		Show show = new Show();
 		Insert insert = new Insert();
 		Update update = new Update();
-		RemoveKey removeKey = new RemoveKey();
+		RemoveById removeById = new RemoveById();
 		Clear clear = new Clear();
 		Save save = new Save();
 		ExecuteScript executeScript = new ExecuteScript();
@@ -54,8 +67,9 @@ public class Interpreter
 		this.availableCommands.put("info", info);
 		this.availableCommands.put("show", show);
 		this.availableCommands.put("insert", insert);
+		this.availableCommands.put("add", insert);
 		this.availableCommands.put("update", update);
-		this.availableCommands.put("remove_key", removeKey);
+		this.availableCommands.put("remove_by_id", removeById);
 		this.availableCommands.put("clear", clear);
 		this.availableCommands.put("save", save);
 		this.availableCommands.put("execute_script", executeScript);
@@ -86,26 +100,35 @@ public class Interpreter
 		while (!exit)
 		{
 			this.outputStream.println("Enter the command:");
-			String inputString = this.consoleScanner.next();
+			String inputString = this.consoleScanner.nextLine();
 			String[] tokens = inputString.split(" ");
 			
 			String commandName = tokens[0];
-			
-			
+			System.out.println("#$##");
+			System.out.println(inputString);
+			System.out.println( Arrays.toString (tokens));
+			System.out.println( Arrays.toString (Arrays.copyOfRange(tokens, 1, tokens.length)));
+			System.out.println("#$##");
 			if (this.availableCommands.keySet().contains(commandName))
 			{
+				
 				this.availableCommands.get(commandName).setBaseMap(baseMap);
+				this.availableCommands.get(commandName).setBaseCollection(this.baseCollection);
 				
 				if (tokens.length > 1)
 					this.availableCommands.get(commandName).setArguments(
-					Arrays.copyOfRange(tokens, 1, tokens.length - 1));
+					Arrays.copyOfRange(tokens, 1, tokens.length));
 				
-				
+
 				this.availableCommands.get(commandName)
 				.setIOStreams(this.consoleScanner, this.outputStream);
 				
 
 				this.availableCommands.get(commandName).execute();
+				
+				//if(commandName == "insert" && this.baseMap.size() == 0)
+				//	this.collectionInitializationDate = java.time.ZonedDateTime.now();
+				
 			}
 			else
 			{

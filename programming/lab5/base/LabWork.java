@@ -37,6 +37,17 @@ public class LabWork implements Comparable<LabWork>
 		return this.id;
 	}
 	
+	public void setCreationDate(java.time.ZonedDateTime creationDate)
+	{
+		this.creationDate = creationDate;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+	
+
 	@Override
 	public int compareTo(LabWork other)
 	{

@@ -8,6 +8,8 @@ public abstract class Command
 {
 	
 	protected Map<LabWork, String> baseMap;
+	protected Collection baseCollection;
+	
 	protected String[] arguments;
 	protected String help;
 	protected Scanner scanner;
@@ -22,6 +24,11 @@ public abstract class Command
 	final public void setBaseMap(Map<LabWork, String> map)
 	{
 		this.baseMap = map;
+	}
+	
+	final public void setBaseCollection(Collection baseCollection)
+	{
+		this.baseCollection = baseCollection;
 	}
 	
 	final public void setIOStreams(Scanner scanner, PrintStream printStream)
