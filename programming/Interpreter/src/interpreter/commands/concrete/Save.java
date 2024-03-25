@@ -1,7 +1,7 @@
 package interpreter.commands.concrete;
 
 import interpreter.commands.Command;
-import util.Constants;
+import constants.Constants;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,8 +16,7 @@ public class Save extends Command
     @Override
     public void execute() {
         try {
-            System.out.println(this.baseCollection.toXml());
-            FileWriter fileWriter = new FileWriter(Constants.FILENAME);
+            FileWriter fileWriter = new FileWriter(Constants.INITIAL_FILE_NAME);
             fileWriter.write(this.baseCollection.toXml());
             fileWriter.close();
         } catch (IllegalAccessException | IOException e) {

@@ -1,7 +1,7 @@
 package business;
 
 import util.OtherUtilities;
-import util.ToXmlAble;
+import trash.ToXmlAble;
 
 import java.util.function.Supplier;
 

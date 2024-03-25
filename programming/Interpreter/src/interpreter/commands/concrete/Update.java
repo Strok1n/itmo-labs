@@ -2,8 +2,8 @@ package interpreter.commands.concrete;
 
 import business.LabWork;
 import interpreter.commands.Command;
-import interpreter.commands.InputValidator;
-import util.CommandExecutionMode;
+import util.InputValidator;
+import trash.CommandExecutionMode;
 import util.ObjectCreator;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,8 +11,6 @@ import java.util.Scanner;
 
 public class Update extends Command
 {
-    private Insert insert;
-
     private ObjectCreator objectCreator;
 
 
@@ -30,6 +28,12 @@ public class Update extends Command
 
     }
 
+    public void setCommandExecutionMode(CommandExecutionMode commandExecutionMode) {
+        this.objectCreator.setObjectCreationMode(commandExecutionMode);
+
+    }
+
+
     @Override
     public void execute() throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
         int id;
@@ -46,14 +50,10 @@ public class Update extends Command
         if (this.baseCollection.getContainer()
             .removeIf((element)-> ((LabWork)element).getId() == finalId))
         {
-            //this.insert.setInsertCommandMode(InsertCommandMode.UPDATE);
-            //this.insert.setId(finalId);
-            //this.insert.execute();
             LabWork labWork =(LabWork) this.objectCreator.createObject();
             labWork.setId(finalId);
             labWork.setCreationDate(java.time.ZonedDateTime.now());
             this.baseCollection.getContainer().add(labWork);
-
             this.outputStream.println("LabWork with id = " + finalId +
                         " successfully updated in the collection");
         }
@@ -61,13 +61,6 @@ public class Update extends Command
         {
             this.outputStream.println("The collection does not contain an element with specified id");
         }
-
-
-
         this.arguments = null;
-    }
-
-    public void setInsert(Insert insert) {
-        this.insert = insert;
     }
 }

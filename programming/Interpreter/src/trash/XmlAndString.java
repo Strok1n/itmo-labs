@@ -1,4 +1,4 @@
-package util;
+package trash;
 
 public class XmlAndString{
     public String s1;

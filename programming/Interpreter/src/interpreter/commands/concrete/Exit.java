@@ -1,7 +1,6 @@
 package interpreter.commands.concrete;
 
 import interpreter.commands.Command;
-import util.ToXmlAble;
 
 public class Exit extends Command
 {

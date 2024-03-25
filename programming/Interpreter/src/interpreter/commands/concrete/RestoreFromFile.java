@@ -1,7 +1,9 @@
 package interpreter.commands.concrete;
 
 import business.LabWork;
+import constants.Constants;
 import interpreter.commands.Command;
+import trash.XmlAndString;
 import util.*;
 
 import java.io.File;
@@ -24,27 +26,21 @@ public class RestoreFromFile extends Command
     {
         Scanner fileScanner = null;
         try {
-            fileScanner = new Scanner(new File(Constants.FILENAME));
+            fileScanner = new Scanner(new File(Constants.INITIAL_FILE_NAME));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
         String  xml ="";
 
-
-
         List<Object> objects;
         while (fileScanner.hasNext()) {
             xml = xml + (fileScanner.next());
             xml = xml + "\n";
         }
-        System.out.println(xml.toString());
-        System.out.println(xml);
-        System.out.println(xml);
-        System.out.println("*SDFSDFSDf");
 
         try {
-            objects = xmlToObjectArray(String.valueOf(xml), "");
+            objects = xmlToObjectArray(xml, "");
         } catch (NoSuchFieldException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -62,16 +58,10 @@ public class RestoreFromFile extends Command
 
     public XmlAndString xmlToObject(String xml, String topLevelClassName) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
 
-        //   System.out.println("START");
-        //  System.out.println("START");
-        //   System.out.println(xml);
-        //   System.out.println("END");
-        //   System.out.println("END");
+
 
         String className = xml.substring(xml.indexOf("<") + 1, xml.indexOf(">"));
 
-        //  System.out.println("CLASSNAME");
-        // System.out.println(className);
 
         Class<?> clazz = Class.class;
         if (Objects.equals(topLevelClassName, ""))
@@ -86,41 +76,17 @@ public class RestoreFromFile extends Command
         xml = xml.substring(xml.indexOf(">") + 1);
 
 
-        //  System.out.println("WIthout classname");
-        //System.out.println(xml);
-
-
 
 
 
         while (xml.indexOf("</") > xml.indexOf(">") || !xml.substring(xml.indexOf("</") + 2, xml.indexOf(">")).toLowerCase().equals(className.toLowerCase())) {
 
-            //  System.out.println("WHILE CLASSNAME");
-            //   System.out.println(className);
-            //  System.out.println("WHILE XML:");
-            //  System.out.println(xml);
-
-
-            if (  xml.indexOf("</") < xml.indexOf(">")  ){
-                //     System.out.println("KOJSODKFJOSKJDFOSJODFSDF");
-                //     System.out.println(xml.substring(xml.indexOf("</") + 2, xml.indexOf(">")).toLowerCase());
-                //    System.out.println(className.toLowerCase());
-
-
-            }
 
 
 
             String fieldName = xml.substring(xml.indexOf("<") + 1, xml.indexOf(">"));
             xml = xml.substring(xml.indexOf(">"));
             Object  fieldValue = xml.substring(xml.indexOf(">") + 1, xml.indexOf("<"));
-            // System.out.println("FIELD: NAME");
-            //  System.out.println(fieldName);
-            // System.out.println("FIELD VALUE");
-            //   System.out.println(fieldValue);
-            //   System.out.println("NEW XML");
-
-
 
 
 
@@ -151,13 +117,7 @@ public class RestoreFromFile extends Command
 
                 Object object1 = constructor1.newInstance();
 
-
-                // System.out.println(xml);
-
-                //   object1 = xmlToObject("<"+fieldName + ">" + xml.substring(1), topLevelClassName + fieldName);
-
                 XmlAndString xmlAndString = xmlToObject( "<"+fieldName + ">" +xml.substring(1),  fieldName);
-
 
 
                 field.setAccessible(true);
@@ -169,62 +129,7 @@ public class RestoreFromFile extends Command
 
                 xml = xml.substring(xml.indexOf(">") + 2);
             }
-//                    xml = xml.substring(xml.indexOf(">") + 2);
-//                      xml = xml.substring(xml.indexOf(">") + 2);
-//                    System.out.println(xml);
-
-
-
-
-            //    System.out.println("##################################");
-
-
-
-
-
-
-
-
-
-//
-//
-//      xml = xml.substring(xml.indexOf(">") + 2);
-//      xml = xml.substring(xml.indexOf(">") + 2);
-//
-//            System.out.println("NEW:");
-//            System.out.println(xml);
-//
-//            if (  xml.indexOf("</") <  xml.indexOf(">")  && xml.substring(xml.indexOf("</") + 2 , xml.indexOf(">")).equals(className))
-//            {
-//                System.out.println("TRUE");
-//                System.out.println("TRUE");
-//                System.out.println(xml.substring(xml.indexOf("</") + 2 , xml.indexOf(">")));
-//                break;
-//            }
-//
-//
-//        }
-//
-//      //  Class<?> clazz = Class.forName("business." + className).getConstructor().newInstance();
-//
-//
-//        System.out.println("REALLY END");
-//        System.out.println(object);
-
-            //  return object;
-
-
-
         }
-
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-//        System.out.println("EXIT");
-
         return new XmlAndString(xml, topLevelClassName, object);
     }
 
@@ -242,12 +147,7 @@ public class RestoreFromFile extends Command
 
         ZonedDateTime dateTime = ZonedDateTime.parse(xml.substring(0, xml.indexOf("</InitializationDate>")));
 
-
-
         xml = xml.substring(xml.indexOf("<LabWork>"));
-        //xml = xml.substring(xml.indexOf("<LabWork>\n"));
-
-
         List<Object> list = new ArrayList<>();
 
         XmlAndString xmlAndString  = this.xmlToObject(xml, topLevelClassName);
@@ -259,18 +159,11 @@ public class RestoreFromFile extends Command
 
         while ( (xmlAndString.s1.length() > 5) && !xmlAndString.s1.substring(xmlAndString.s1.indexOf('>') + 1).equals("")){
 
-            // System.out.println("SDFSDFSDFSFD");
-            //  System.out.println(xmlAndString.s1.replaceAll("\n", "1"));
-            // System.out.println("SDFSDFSDFSFD");
-
 
             xmlAndString = xmlToObject(xmlAndString.s1, "");
 
-            //  System.out.println(xmlAndString.obj);
             list.add(xmlAndString.obj);
-            // System.out.println(xmlAndString.obj);
 
-            //    xmlAndString.s1 = xmlAndString.s1.substring(xmlAndString.s1.indexOf('>') + 1);
 
             xmlAndString.s1 =  xmlAndString.s1.substring(xmlAndString.s1.indexOf('>') + 1);
 

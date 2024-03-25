@@ -2,8 +2,8 @@ package interpreter.commands.concrete;
 
 import business.LabWork;
 import interpreter.commands.Command;
-import interpreter.commands.InputValidator;
-import util.CommandExecutionMode;
+import util.InputValidator;
+import trash.CommandExecutionMode;
 import util.ObjectCreator;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;

@@ -1,6 +1,7 @@
-package interpreter.commands;
+package util;
 
 import business.Coordinates;
+import business.Difficulty;
 import business.Discipline;
 import business.LabWork;
 import util.TypeUtilities;
@@ -60,7 +61,7 @@ public class InputValidator
         this.invalidInputMessages.put(LabWork.class.getDeclaredField("tunedInWorks"),
                 "tunedInWorks must be a long integer");
         this.invalidInputMessages.put(LabWork.class.getDeclaredField("difficulty"),
-                "difficulty must not be null");
+                "difficulty must not be null and must be one of these values: " + Arrays.toString(Difficulty.values()));
 
         this.invalidInputMessages.put(Coordinates.class.getDeclaredField("x"),
                 "x must be a float number");

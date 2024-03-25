@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public abstract class Command
 {
-    protected Map<LabWork, String> baseMap;
     protected MainCollection baseCollection;
 
     protected String[] arguments;
@@ -18,26 +17,16 @@ public abstract class Command
     protected Scanner scanner;
     protected PrintStream outputStream;
 
-
-
-
-
     final public String getHelp()
     {
         return this.help;
     }
-
-    final public void setBaseMap(Map<LabWork, String> map)
-    {
-        this.baseMap = map;
-    }
-
     final public void setBaseCollection(MainCollection baseCollection)
     {
         this.baseCollection = baseCollection;
     }
 
-    final public void setIOStreams(Scanner scanner, PrintStream printStream)
+     public void setIOStreams(Scanner scanner, PrintStream printStream)
     {
         this.scanner = scanner;
         this.outputStream = printStream;

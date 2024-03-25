@@ -23,9 +23,6 @@ public class Interpreter
     private final PrintStream outputStream;
 
     private final Queue<String> scriptsFileNames;
-    private final MainCollection baseCollection;
-
-
     private Queue<String> commandHistory;
     public Interpreter() throws NoSuchFieldException
     {
@@ -36,11 +33,6 @@ public class Interpreter
 
         this.commandHistory = new ArrayDeque<>();
 
-
-        this.baseCollection = new MainCollection<LabWork>();
-        this.baseCollection.setContainer( new HashSet<LabWork>() );
-        this.baseCollection.setCollectionInitializationDate(java.time.ZonedDateTime.now());
-
         this.scriptsFileNames = new ArrayDeque<>();
 
         Help help = new Help();
@@ -49,11 +41,6 @@ public class Interpreter
         History history = new History();
 
         history.setCommandHistory(this.commandHistory);
-
-
-       // update.setInsert(insert);
-
-
 
         this.availableCommands.put("help", help);
         this.availableCommands.put("info", new Info());
@@ -82,15 +69,17 @@ public class Interpreter
         Collection<Command> collection = this.availableCommands.values();
         collection.remove(null);
 
-//        help.setAvailableCommands( Arrays.copyOf(
-//                ( Set.copyOf(collection ) )  .toArray(),
-//                this.availableCommands.size(), Command[].class ) );
-
         help.setAvailableCommands(Set.copyOf(collection));
+
+
+
+        MainCollection baseCollection = new MainCollection<LabWork>();
+        baseCollection.setContainer( new HashSet<LabWork>() );
+        baseCollection.setCollectionInitializationDate(java.time.ZonedDateTime.now());
 
         for (Command command: this.availableCommands.values()) {
             command.setIOStreams(this.consoleScanner, this.outputStream);
-            command.setBaseCollection(this.baseCollection);
+            command.setBaseCollection(baseCollection);
         }
 
 
@@ -114,26 +103,23 @@ public class Interpreter
         );
     }
 
-    public void handleOneInputString(String input) throws IllegalAccessException, FileNotFoundException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+    public void handleInputString(String input) throws IllegalAccessException, FileNotFoundException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
         String[] tokens = input.split(" ");
         String commandName = tokens[0];
 
         if (this.availableCommands.containsKey(commandName))
         {
-           // this.availableCommands.get(commandName).setBaseMap(baseMap);
-           // this.availableCommands.get(commandName).setBaseCollection(this.baseCollection);
             if (tokens.length > 1)
-                this.availableCommands.get(commandName).setArguments(
+            this.availableCommands.get(commandName).setArguments(
                         Arrays.copyOfRange(tokens, 1, tokens.length));
-          //  this.availableCommands.get(commandName)
-             //       .setIOStreams(this.consoleScanner, this.outputStream);
+
             this.outputStream.println("Executing command " + commandName + ":");
             this.availableCommands.get(commandName).execute();
+            this.outputStream.println("Execution of the command " + commandName + " has ended");
+
             this.commandHistory.add(commandName);
             if (this.commandHistory.size() > 8)
                 this.commandHistory.poll();
-            //if(commandName == "insert" && this.baseMap.size() == 0)
-            //	this.collectionInitializationDate = java.time.ZonedDateTime.now();
         }
         else
         {
@@ -141,17 +127,17 @@ public class Interpreter
         }
     }
 
-
-
     public void start() throws IllegalAccessException, FileNotFoundException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+
+        this.handleInputString("restore_from_file");
+
         while (true)
         {
             this.outputStream.println("Enter the command:");
             String inputString = this.consoleScanner.nextLine();
-            this.handleOneInputString(inputString);
+            this.handleInputString(inputString);
         }
     }
-
     public Queue<String> getScriptsFileNames() {
         return scriptsFileNames;
     }
@@ -160,10 +146,4 @@ public class Interpreter
     {
         this.scriptsFileNames.add(fileName);
     }
-
-
-
-
-
-
 }

@@ -1,10 +1,9 @@
 package util;
 
 import exceptions.WrongFieldValueDuringScriptExecutionException;
-import interpreter.commands.InputValidator;
+import trash.CommandExecutionMode;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
@@ -19,6 +18,12 @@ public class ObjectCreator
 
     public void setObjectCreationMode(CommandExecutionMode objectCreationMode) {
         this.objectCreationMode = objectCreationMode;
+    }
+
+    public void setIOStreams(Scanner scanner, PrintStream printStream)
+    {
+        this.scanner = scanner;
+        this.outputStream = printStream;
     }
 
     public ObjectCreator(Class<?> objectClass, InputValidator inputValidator, PrintStream outputStream, Scanner scanner, CommandExecutionMode objectCreationMode)
@@ -50,6 +55,7 @@ public class ObjectCreator
             if (TypeUtilities.isPrimitiveOrWrapperOrString(field.getType()) || field.getType().isEnum() )
             {
                 input = this.scanner.nextLine();
+                System.out.println(input);
                 Object value;
                 try
                 {
@@ -90,7 +96,6 @@ public class ObjectCreator
         Object object = objectClass.getDeclaredConstructor().newInstance();
         for (Field field : objectClass.getDeclaredFields())
         {
-
             try
             {
                 this.setFieldValueToTheObject(object, field);
@@ -102,31 +107,5 @@ public class ObjectCreator
             }
         }
         return object;
-
-//        int maxId = 0;
-//        for (Object l : this.baseCollection.getBaseCollection())
-//            if ( maxId < ((LabWork) l).getId() )
-//                maxId = ((LabWork) l).getId();
-//
-//        int id = 1 + maxId;
-//
-//        if (this.insertCommandMode == InsertCommandMode.UPDATE)
-//            id = this.id;
-//
-//        labWork.setId(id);
-//        labWork.setCreationDate(java.time.ZonedDateTime.now());
-//
-//        this.baseCollection.getBaseCollection().add(labWork);
-
-     //   if (this.insertCommandMode == InsertCommandMode.INSERT)
-        //    this.outputStream.println("LabWork successfully added to the collection");
-      //  if (this.insertCommandMode == InsertCommandMode.UPDATE)
-         //   this.outputStream.println("LabWork with id = " + id +
-           //         " successfully updated in the collection");
-
     }
-
-
-
-
 }

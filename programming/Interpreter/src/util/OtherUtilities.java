@@ -1,9 +1,10 @@
 package util;
 
+import trash.XmlAndString;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -263,110 +264,5 @@ public class OtherUtilities
 
         return list;
     }
-
-
-
-
-
-        //        System.out.println("START");
-//        System.out.println(xml);
-//        System.out.println("END");
-//
-//        String className = xml.substring(xml.indexOf("<") + 1, xml.indexOf(">"));
-//
-//
-//        System.out.println("CLAAASONA<E");
-//        System.out.println(className);
-//
-//        Class<?> clazz = Class.class;
-//
-//        if (Objects.equals(topLevelClassName, ""))
-//            clazz = Class.forName("business."  + className);
-//            else {
-//            clazz = Class.forName("business." + topLevelClassName);
-//        }
-//
-//        Constructor<?> constructor = clazz.getDeclaredConstructor();
-//
-//        Object object = constructor.newInstance();
-//
-//        xml = xml.substring(xml.indexOf(">") + 1);
-//        System.out.println(xml);
-//
-//
-//
-//        while (xml.indexOf("</") >  xml.indexOf(">") || !xml.substring(xml.indexOf("</") + 1, xml.indexOf(">")).equals(className))
-//        {
-//
-//            String fieldName = xml.substring(xml.indexOf("<") + 1, xml.indexOf(">"));
-//            xml = xml.substring(xml.indexOf(">"));
-//            Object  fieldValue = xml.substring(xml.indexOf(">") + 1, xml.indexOf("<"));
-//            System.out.println("FIELD: NAME");
-//            System.out.println(fieldName);
-//         System.out.println("FIELD VALUE");
-//            System.out.println(fieldValue);
-//
-//
-//           Field field =  object.getClass().getDeclaredField(fieldName.toLowerCase());
-//
-//
-//
-//           if (TypeUtilities.isPrimitiveOrWrapperOrString(field.getType()) || field.getType().isEnum() || field.getType().equals(ZonedDateTime.class))
-//           {
-//               field.setAccessible(true);
-//               fieldValue = TypeUtilities.StringToSpecifiedFieldType((String) fieldValue, field);
-//               field.set(object, fieldValue);
-//               field.setAccessible(false);
-//           }
-//           else
-//           {
-//               Class<?> clazzz = Class.forName(field.getDeclaringClass().getName());
-//
-//               Constructor<?> constructor1 = clazzz.getDeclaredConstructor();
-//
-//               Object object1 = constructor1.newInstance();
-//               System.out.println(xml);
-//
-//            //   object1 = xmlToObject("<"+fieldName + ">" + xml.substring(1), topLevelClassName + fieldName);
-//
-//               XmlAndString xmlAndString = xmlToObject("<"+fieldName + ">" + xml.substring(1), topLevelClassName + fieldName);
-//
-//
-//               field.setAccessible(true);
-//               field.set(object, xmlAndString.obj);
-//               field.setAccessible(false);
-//
-//               xml = xmlAndString.s1;
-//               topLevelClassName = xmlAndString.s2;
-//           }
-//
-//
-//      xml = xml.substring(xml.indexOf(">") + 2);
-//      xml = xml.substring(xml.indexOf(">") + 2);
-//
-//            System.out.println("NEW:");
-//            System.out.println(xml);
-//
-//            if (  xml.indexOf("</") <  xml.indexOf(">")  && xml.substring(xml.indexOf("</") + 2 , xml.indexOf(">")).equals(className))
-//            {
-//                System.out.println("TRUE");
-//                System.out.println("TRUE");
-//                System.out.println(xml.substring(xml.indexOf("</") + 2 , xml.indexOf(">")));
-//                break;
-//            }
-//
-//
-//        }
-//
-//      //  Class<?> clazz = Class.forName("business." + className).getConstructor().newInstance();
-//
-//
-//        System.out.println("REALLY END");
-//        System.out.println(object);
-//
-//      //  return object;
-//        return new XmlAndString(xml, topLevelClassName, object);
-
-
 }
 
