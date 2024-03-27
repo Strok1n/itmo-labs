@@ -1,6 +1,7 @@
 package interpreter.commands.concrete;
 
 import business.LabWork;
+import exceptions.OutputTextException;
 import interpreter.commands.Command;
 import util.InputValidator;
 import trash.CommandExecutionMode;
@@ -22,7 +23,7 @@ public class  RemoveGreater extends Command
 
 
     @Override
-    public void execute() throws NoSuchFieldException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+    public void execute() throws NoSuchFieldException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, OutputTextException {
 
         this.objectCreator = new ObjectCreator(
                 LabWork.class,

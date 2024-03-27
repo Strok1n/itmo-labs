@@ -1,6 +1,8 @@
 package interpreter.commands;
 
 import business.LabWork;
+import exceptions.InsertException;
+import exceptions.OutputTextException;
 import interpreter.collection.MainCollection;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -37,5 +39,5 @@ public abstract class Command
         this.arguments = arguments;
     }
 
-    abstract public void execute() throws IllegalAccessException, FileNotFoundException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException;
+    abstract public void execute() throws IllegalAccessException, FileNotFoundException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException, InsertException, OutputTextException;
 }

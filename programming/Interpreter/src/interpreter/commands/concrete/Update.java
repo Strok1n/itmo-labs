@@ -1,6 +1,7 @@
 package interpreter.commands.concrete;
 
 import business.LabWork;
+import exceptions.OutputTextException;
 import interpreter.commands.Command;
 import util.InputValidator;
 import trash.CommandExecutionMode;
@@ -35,7 +36,7 @@ public class Update extends Command
 
 
     @Override
-    public void execute() throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
+    public void execute() throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException, OutputTextException {
         int id;
         try
         {

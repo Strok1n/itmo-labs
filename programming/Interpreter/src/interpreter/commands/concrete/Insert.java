@@ -1,6 +1,7 @@
 package interpreter.commands.concrete;
 
 import business.LabWork;
+import exceptions.InsertException;
 import interpreter.commands.Command;
 import util.InputValidator;
 import trash.CommandExecutionMode;
@@ -45,22 +46,31 @@ public class Insert extends Command
     }
 
     @Override
-    public void execute() throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException {
-        LabWork labWork =(LabWork) this.objectCreator.createObject();
+    public void execute() throws IllegalAccessException, NoSuchFieldException, InvocationTargetException, NoSuchMethodException, InstantiationException, InsertException {
+
+//        LabWork labWork = (LabWork) this.objectCreator.createObject();
+//
+//        int maxId = 0;
+//        for (Object l : this.baseCollection.getContainer())
+//            if ( maxId < ((LabWork) l).getId() )
+//                maxId = ((LabWork) l).getId();
+//
+//        int id = 1 + maxId;
+//
+//        labWork.setId(id);
+//        labWork.setCreationDate(java.time.ZonedDateTime.now());
+//
+//        this.baseCollection.getContainer().add(labWork);
+//        this.outputStream.println("LabWork successfully added to the collection");
 
 
+        AddLabWorkToTheCollection addLabWorkToTheCollection = new AddLabWorkToTheCollection();
 
-        int maxId = 0;
-        for (Object l : this.baseCollection.getContainer())
-            if ( maxId < ((LabWork) l).getId() )
-                maxId = ((LabWork) l).getId();
+        addLabWorkToTheCollection.setBaseCollection(this.baseCollection);
 
-        int id = 1 + maxId;
 
-        labWork.setId(id);
-        labWork.setCreationDate(java.time.ZonedDateTime.now());
+        throw new InsertException(LabWork.class, new InputValidator(), CommandExecutionMode.MANUAL_INPUT, addLabWorkToTheCollection);
 
-        this.baseCollection.getContainer().add(labWork);
-        this.outputStream.println("LabWork successfully added to the collection");
+
     }
 }
