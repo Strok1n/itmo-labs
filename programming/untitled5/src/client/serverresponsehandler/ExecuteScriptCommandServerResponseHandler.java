@@ -28,7 +28,7 @@ public class ExecuteScriptCommandServerResponseHandler implements ServerResponse
             output = output.concat(
                     this.serverResponseHandlerMap
                             .get(commandExecutionResultDTO1.getCommandName())
-                            .handleServerResponse(commandExecutionResultDTO1)
+                            .handleServerResponse(commandExecutionResultDTO1).concat("\n")
             );
         }
 

@@ -16,7 +16,7 @@ public class HelpCommandDTOBuilder implements CommandDTOBuilder {
     }
 
     @Override
-    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator) {
+    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator, String commandArgument) {
         return null;
     }
 }

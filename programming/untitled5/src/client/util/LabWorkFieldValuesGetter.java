@@ -14,6 +14,28 @@ public class LabWorkFieldValuesGetter
         this.consoleWriter = consoleWriter;
     }
 
+
+    public int getLabWorkId()
+    {
+        while (true)
+        {
+            consoleWriter.printlnToOutputStream("Введите id лабораторной работы:");
+            String idString = consoleReader.getNextLine();
+            int id = -1;
+            try
+            {
+                id = Integer.parseInt(idString);
+            }
+            catch (NumberFormatException numberFormatException)
+            {
+                consoleWriter.printlnToOutputStream("id должно быть целым числом");
+                continue;
+            }
+            if (FieldValidators.validateLabWorkCoordinatesX(id))
+                return id;
+        }
+    }
+
     public String getLabWorkName()
     {
         while (true)

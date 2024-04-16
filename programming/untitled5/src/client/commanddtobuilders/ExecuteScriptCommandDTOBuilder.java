@@ -30,7 +30,7 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
         String[] fileStrings;
         try {
              fileInputStream = new BufferedInputStream(
-                     new FileInputStream("C:\\file.txt"));
+                     new FileInputStream(commandArguments[0]));
              String file = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
              fileStrings = file.split("\\n");
         } catch (FileNotFoundException e) {
@@ -47,13 +47,20 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
             for (StringIterator stringIterator = new StringIterator();
              stringIterator.getI() < fileStrings.length ; stringIterator.increment()) {
 
-                System.out.println(fileStrings[
-                        stringIterator.getI()
-                        ]);
 
-            commandDTOList.add(this.commandDTOBuilders.get(fileStrings[
-                    stringIterator.getI()
-                    ].trim()).buildCommandDTOFromScript(fileStrings, stringIterator));
+
+                String[] tokens = fileStrings[stringIterator.getI()].split(" ");
+                String commandName = tokens[0];
+                String[] arguments = Arrays.copyOfRange(tokens, 1, tokens.length);
+
+                if (arguments.length == 0)
+                {
+                    arguments = new String[1];
+                    arguments[0] = "dsf";
+                }
+
+            commandDTOList.add(this.commandDTOBuilders.get(
+                    commandName.trim()).buildCommandDTOFromScript(fileStrings, stringIterator, arguments[0] ));
 
             }
 
@@ -66,14 +73,16 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
     }
 
     @Override
-    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator)
+    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator, String commandArgument)
     {
 
         Scanner fileScanner;
         BufferedInputStream fileInputStream;
         try {
+
+
             fileInputStream = new BufferedInputStream(
-                    new FileInputStream("C:\\file.txt"));
+                    new FileInputStream(commandArgument.trim()));
             String file = new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8);
             fileStrings = file.split("\\n");
         } catch (FileNotFoundException e) {
@@ -87,16 +96,25 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
 
         try {
 
-            for ( ;
-                 stringIterator.getI() < fileStrings.length ; stringIterator.increment()) {
+            for (StringIterator stringIterator1 = new StringIterator();
+                 stringIterator1.getI() < fileStrings.length ; stringIterator1.increment()) {
 
-                System.out.println(fileStrings[
-                        stringIterator.getI()
-                        ]);
 
-                commandDTOList.add(this.commandDTOBuilders.get(fileStrings[
-                        stringIterator.getI()
-                        ].trim()).buildCommandDTOFromScript(fileStrings, stringIterator));
+                String[] tokens = fileStrings[stringIterator1.getI()].split(" ");
+                String commandName = tokens[0];
+                String[] arguments = Arrays.copyOfRange(tokens, 1, tokens.length);
+
+
+                if (arguments.length == 0)
+                {
+                    arguments = new String[1];
+                    arguments[0] = "dsf";
+                }
+
+
+                commandDTOList.add(this.commandDTOBuilders.get(
+                        commandName.trim()
+                ).buildCommandDTOFromScript(fileStrings, stringIterator1, arguments[0] ));
 
             }
         }catch (InvalidCommandArgumentsInScriptFileException invalidCommandArgumentsInScriptFileException)

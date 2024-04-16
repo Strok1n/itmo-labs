@@ -44,7 +44,7 @@ public class AddCommandDTOBuilder implements CommandDTOBuilder
     }
 
     @Override
-    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator) throws InvalidCommandArgumentsInScriptFileException {
+    public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator, String commandArgument) throws InvalidCommandArgumentsInScriptFileException {
 
         String labWorkNameString = fileStrings[stringIterator.increment()].trim();
         String labWorkCoordinatesXString = fileStrings[stringIterator.increment()].trim();

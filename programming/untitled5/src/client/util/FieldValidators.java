@@ -3,6 +3,22 @@ package client.util;
 public class FieldValidators
 {
 
+    static public boolean validateLabWorkId(Integer id)
+    {
+        return true;
+    }
+
+    static public boolean validateLabWorkId(String idString)
+    {
+        Integer id;
+        try {
+            id = Integer.parseInt(idString);
+        }
+        catch (NumberFormatException numberFormatException){
+            return false;
+        }
+        return validateLabWorkId(id);
+    }
 
     static public boolean validateLabWorkName(String labWorkName)
     {

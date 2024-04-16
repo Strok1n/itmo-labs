@@ -39,6 +39,10 @@ public class CollectionManager {
         return this.maxIdOfTheCollection() + 1;
     }
 
+    public boolean removeById(int id)
+    {
+        return this.labWorks.removeIf((labWork -> (labWork.getId() == id)));
+    }
     public String getTypeOfTheCollection()
     {
         return labWorks.getClass().getSimpleName();
