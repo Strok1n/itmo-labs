@@ -1,10 +1,8 @@
 package client;
 
-import client.commandpreparers.AddCommandPreparer;
-import client.commandpreparers.CommandPreparer;
-import client.commandpreparers.HelpCommandPreparer;
-import client.commandpreparers.InfoCommandPreparer;
+import client.commanddtobuilders.*;
 import client.serverresponsehandler.AddCommandServerResponseHandler;
+import client.serverresponsehandler.ExecuteScriptCommandServerResponseHandler;
 import client.serverresponsehandler.InfoCommandServerResponseHandler;
 import client.serverresponsehandler.ServerResponseHandler;
 import contract.command.CommandDTO;
@@ -17,22 +15,30 @@ import java.util.Map;
 
 public class InputHandler
 {
-    private final Map<String, CommandPreparer> map;
+    private final Map<String, CommandDTOBuilder> commandDTOBuilders;
 
     private final Map<String, ServerResponseHandler> serverResponseHandlerMap;
 
 
     public InputHandler(ConsoleReader consoleReader, ConsoleWriter consoleWriter)
     {
-        map = new HashMap<>();
-        map.put("help", new HelpCommandPreparer());
-        map.put("add", new AddCommandPreparer(consoleReader, consoleWriter));
-        map.put("info", new InfoCommandPreparer());
+        commandDTOBuilders = new HashMap<>();
+        commandDTOBuilders.put("help", new HelpCommandDTOBuilder());
+        commandDTOBuilders.put("add", new AddCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put("info", new InfoCommandDTOBuilder());
+
+        commandDTOBuilders.put("execute_script", new ExecuteScriptCommandDTOBuilder(
+                this.commandDTOBuilders
+        ));
+
 
 
         serverResponseHandlerMap = new HashMap<>();
         serverResponseHandlerMap.put("info", new InfoCommandServerResponseHandler());
         serverResponseHandlerMap.put("add", new AddCommandServerResponseHandler());
+        serverResponseHandlerMap.put("execute_script",
+                new ExecuteScriptCommandServerResponseHandler(this.serverResponseHandlerMap));
+
 
     }
 
@@ -43,7 +49,10 @@ public class InputHandler
         String commandName = tokens[0];
         String[] arguments = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-        CommandDTO commandDTO = map.get(commandName).prepareCommand(arguments);
+        CommandDTO commandDTO = commandDTOBuilders.get(commandName).buildCommandDTO(arguments);
+
+
+
 
         CommandExecutionResultDTO commandExecutionResultDTO =
                 Server.serverEntryPoint.response(commandDTO);
