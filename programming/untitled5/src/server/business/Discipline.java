@@ -9,4 +9,12 @@ public class Discipline {
         this.name = name;
         this.labsCount = labsCount;
     }
+
+    @Override
+    public String toString() {
+        return "Discipline{" +
+                "name='" + name + '\'' +
+                ", labsCount=" + labsCount +
+                '}';
+    }
 }

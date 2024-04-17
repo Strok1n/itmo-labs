@@ -2,7 +2,7 @@ package client.commanddtobuilders;
 
 import client.exceptions.InvalidCommandArgumentsInScriptFileException;
 import client.util.StringIterator;
-import contract.command.CommandDTO;
+import contract.dto.commanddto.CommandDTO;
 
 public interface CommandDTOBuilder
 {

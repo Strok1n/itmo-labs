@@ -39,6 +39,16 @@ public class CollectionManager {
         return this.maxIdOfTheCollection() + 1;
     }
 
+    public Set<LabWork> getCollectionCopy()
+    {
+        return new HashSet<>(this.labWorks);
+    }
+
+    public void clear()
+    {
+        this.labWorks.clear();
+    }
+
     public boolean removeById(int id)
     {
         return this.labWorks.removeIf((labWork -> (labWork.getId() == id)));

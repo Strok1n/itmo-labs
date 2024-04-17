@@ -1,7 +1,7 @@
 package client.util;
 
-import client.ConsoleReader;
-import client.ConsoleWriter;
+import client.io.ConsoleReader;
+import client.io.ConsoleWriter;
 
 public class LabWorkFieldValuesGetter
 {
@@ -19,7 +19,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите id лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите id лабораторной работы:");
             String idString = consoleReader.getNextLine();
             int id = -1;
             try
@@ -28,7 +28,7 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("id должно быть целым числом");
+                consoleWriter.printlnToTheOutputStream("id должно быть целым числом");
                 continue;
             }
             if (FieldValidators.validateLabWorkCoordinatesX(id))
@@ -40,12 +40,12 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите название лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите название лабораторной работы:");
             String name = consoleReader.getNextLine();
             if (FieldValidators.validateLabWorkName(name))
                 return name;
             else
-                consoleWriter.printlnToOutputStream("Название лабораторной работы не может быть null, и не может быть пустым");
+                consoleWriter.printlnToTheOutputStream("Название лабораторной работы не может быть null, и не может быть пустым");
         }
     }
 
@@ -53,7 +53,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите координату x лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите координату x лабораторной работы:");
             String xString = consoleReader.getNextLine();
             int x = 0;
             try
@@ -62,7 +62,7 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("x должно быть целым числом");
+                consoleWriter.printlnToTheOutputStream("x должно быть целым числом");
                 continue;
             }
             if (FieldValidators.validateLabWorkCoordinatesX(x))
@@ -74,7 +74,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите координату y лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите координату y лабораторной работы:");
             String yString = consoleReader.getNextLine();
             Integer y = 0;
             try
@@ -83,13 +83,13 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("y должно быть целым числом");
+                consoleWriter.printlnToTheOutputStream("y должно быть целым числом");
                 continue;
             }
             if (FieldValidators.validateLabWorkCoordinatesY(y))
                 return y;
             else
-                consoleWriter.printlnToOutputStream("Значение y должно быть больше -161, y не может быть null");
+                consoleWriter.printlnToTheOutputStream("Значение y должно быть больше -161, y не может быть null");
         }
     }
 
@@ -98,7 +98,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите минимальную точку лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите минимальную точку лабораторной работы:");
             String minimalPointString = consoleReader.getNextLine();
             Double minimalPoint = 0.0;
             try
@@ -107,13 +107,13 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("Минимальная точка должна быть числом с плавающей точкой");
+                consoleWriter.printlnToTheOutputStream("Минимальная точка должна быть числом с плавающей точкой");
                 continue;
             }
             if (FieldValidators.validateLabWorkMinimalPoint(minimalPoint))
                 return minimalPoint;
             else
-                consoleWriter.printlnToOutputStream("Минимальная точка должна быть больше 0, минимальная точка не может быть null");
+                consoleWriter.printlnToTheOutputStream("Минимальная точка должна быть больше 0, минимальная точка не может быть null");
         }
     }
 
@@ -122,7 +122,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите число настроенных на работу лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите число настроенных на работу лабораторной работы:");
             String tunedInWorksString = consoleReader.getNextLine();
             long tunedInWorks = 0;
             try
@@ -131,7 +131,7 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("Число настроенных на работу должно быть целым числом");
+                consoleWriter.printlnToTheOutputStream("Число настроенных на работу должно быть целым числом");
                 continue;
             }
             if (FieldValidators.validateLabWorkTunedInWorks(tunedInWorks))
@@ -143,12 +143,12 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите сложность лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите сложность лабораторной работы:");
             String difficulty = consoleReader.getNextLine();
             if (FieldValidators.validateLabWorkDifficulty(difficulty))
                 return difficulty;
             else
-                consoleWriter.printlnToOutputStream("Сложность лабораторной работы должна быть одним из значений: VERY_EASY, EASY, VERY_HARD, INSANE");
+                consoleWriter.printlnToTheOutputStream("Сложность лабораторной работы должна быть одним из значений: VERY_EASY, EASY, VERY_HARD, INSANE");
         }
     }
 
@@ -156,12 +156,12 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите название дисциплины лабораторной работы:");
+            consoleWriter.printlnToTheOutputStream("Введите название дисциплины лабораторной работы:");
             String disciplineName = consoleReader.getNextLine();
             if (FieldValidators.validateLabWorkDisciplineName(disciplineName))
                 return disciplineName;
             else
-                consoleWriter.printlnToOutputStream("Название дисциплины лабораторной работы не может быть null, и не может быть пустым");
+                consoleWriter.printlnToTheOutputStream("Название дисциплины лабораторной работы не может быть null, и не может быть пустым");
         }
     }
 
@@ -169,7 +169,7 @@ public class LabWorkFieldValuesGetter
     {
         while (true)
         {
-            consoleWriter.printlnToOutputStream("Введите число лабораторных работ дисциплины:");
+            consoleWriter.printlnToTheOutputStream("Введите число лабораторных работ дисциплины:");
             String disciplineLabsCountString = consoleReader.getNextLine();
             int disciplineLabsCount = 0;
             try
@@ -178,7 +178,7 @@ public class LabWorkFieldValuesGetter
             }
             catch (NumberFormatException numberFormatException)
             {
-                consoleWriter.printlnToOutputStream("Число лабораторных работ должно быть целым числом");
+                consoleWriter.printlnToTheOutputStream("Число лабораторных работ должно быть целым числом");
                 continue;
             }
             if (FieldValidators.validateLabWorkDisciplineLabsCount(disciplineLabsCount))
