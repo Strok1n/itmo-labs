@@ -29,6 +29,6 @@ public class RemoveByIdCommandDTOBuilder implements CommandDTOBuilder {
 
     @Override
     public CommandDTO buildCommandDTOFromScript(String[] fileStrings, StringIterator stringIterator, String commandArgument) throws InvalidCommandArgumentsInScriptFileException {
-        return null;
+        return new RemoveByIdCommandDTO(Integer.parseInt(commandArgument.trim()));
     }
 }

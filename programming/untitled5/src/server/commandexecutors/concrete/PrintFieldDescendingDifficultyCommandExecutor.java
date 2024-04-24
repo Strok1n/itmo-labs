@@ -1,0 +1,45 @@
+package server.commandexecutors.concrete;
+
+import contract.dto.commanddto.CommandDTO;
+import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.PrintAscendingCommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.PrintFieldDescendingDifficultyCommandExecutionResultDTO;
+import server.CollectionManager;
+import server.business.LabWork;
+import server.commandexecutors.CommandExecutor;
+
+import java.util.Comparator;
+import java.util.List;
+
+public class PrintFieldDescendingDifficultyCommandExecutor implements CommandExecutor {
+
+    final private CollectionManager collectionManager;
+
+    public PrintFieldDescendingDifficultyCommandExecutor(CollectionManager collectionManager)
+    {
+        this.collectionManager = collectionManager;
+    }
+
+    @Override
+    public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+
+        List<LabWork> sorted  = this.collectionManager.getCollectionCopy()
+                .stream().sorted(
+                        new Comparator<LabWork>() {
+                            @Override
+                            public int compare(LabWork o1, LabWork o2) {
+                                return o2.getDifficulty().compareTo(
+                                        o1.getDifficulty());
+                            }
+                        }
+                ).toList();
+        String output = "";
+        for (LabWork l: sorted) {
+            output = output.concat(l.getDifficulty().toString()).concat("\n");
+        }
+
+        return new PrintFieldDescendingDifficultyCommandExecutionResultDTO(
+                output
+        );
+    }
+}

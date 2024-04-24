@@ -2,15 +2,16 @@ package contract.dto.commandexecutionresultdto.concrete;
 
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 public class InfoCommandExecutionResultDTO implements CommandExecutionResultDTO {
     private String collectionType;
-    private ZonedDateTime collectionInitializationDateTime;
+    private LocalDate collectionInitializationDateTime;
     private int collectionSize;
 
     public InfoCommandExecutionResultDTO(String collectionType,
-                                         ZonedDateTime collectionInitializationDateTime,
+                                         LocalDate collectionInitializationDateTime,
                                          int collectionSize)
     {
         this.collectionType = collectionType;
@@ -22,7 +23,7 @@ public class InfoCommandExecutionResultDTO implements CommandExecutionResultDTO 
         return collectionType;
     }
 
-    public ZonedDateTime getCollectionInitializationDateTime() {
+    public LocalDate getCollectionInitializationDateTime() {
         return collectionInitializationDateTime;
     }
 

@@ -1,15 +1,15 @@
 package contract.dto.commandexecutionresultdto.concrete;
 
-import contract.CommandIdentifier;
+import contract.CommandName;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 
 import java.util.Map;
 
 public class HelpCommandExecutionResultDTO implements CommandExecutionResultDTO {
 
-    private final Map<CommandIdentifier, String> helpMap;
+    private final Map<CommandName, String> helpMap;
 
-    public HelpCommandExecutionResultDTO(Map<CommandIdentifier, String> helpMap) {
+    public HelpCommandExecutionResultDTO(Map<CommandName, String> helpMap) {
         this.helpMap = helpMap;
     }
 
@@ -18,7 +18,7 @@ public class HelpCommandExecutionResultDTO implements CommandExecutionResultDTO 
         return "help";
     }
 
-    public Map<CommandIdentifier, String> getHelpMap() {
+    public Map<CommandName, String> getHelpMap() {
         return helpMap;
     }
 }

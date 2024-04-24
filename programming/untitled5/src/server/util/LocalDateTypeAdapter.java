@@ -1,4 +1,4 @@
-package server;
+package server.util;
 
 import com.google.gson.*;
 

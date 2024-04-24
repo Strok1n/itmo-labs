@@ -1,6 +1,8 @@
 package server;
 
 import server.business.LabWork;
+
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -8,13 +10,21 @@ import java.util.Set;
 
 public class CollectionManager {
 
-    private Set<LabWork> labWorks;
-    private ZonedDateTime collectionInitializationDateTime;
+    private String collectionFileName;
 
-    public CollectionManager(Set<LabWork> set)
+    private LocalDate collectionInitializationDateTime;
+    private Set<LabWork> labWorks;
+
+
+
+
+    public CollectionManager(Set<LabWork> set,
+                             LocalDate collectionInitializationDateTime,
+                             String collectionFileName)
     {
         this.labWorks = set;
-        this.collectionInitializationDateTime = ZonedDateTime.now();
+        this.collectionInitializationDateTime = collectionInitializationDateTime;
+        this.collectionFileName = collectionFileName;
     }
 
     public boolean addLabWorkToTheCollection(LabWork labWork)
@@ -24,12 +34,18 @@ public class CollectionManager {
 
     private int maxIdOfTheCollection()
     {
-       return this.labWorks.stream().max(new Comparator<LabWork>() {
-            @Override
-            public int compare(LabWork o1, LabWork o2) {
-                return o1.getId() - o2.getId();
-            }
-        }).get().getId();
+        int maxid= 0;
+        for (LabWork l : labWorks) {
+            if (l.getId() > maxid)
+                maxid = l.getId();
+        }
+        return maxid;
+//       return this.labWorks.stream().max(new Comparator<LabWork>() {
+//            @Override
+//            public int compare(LabWork o1, LabWork o2) {
+//                return o1.getId() - o2.getId();
+//            }
+//        }).get().getId();
     }
 
     public int generateId()
@@ -39,6 +55,9 @@ public class CollectionManager {
         return this.maxIdOfTheCollection() + 1;
     }
 
+    public Set<LabWork> getCollection() {
+        return labWorks;
+    }
     public Set<LabWork> getCollectionCopy()
     {
         return new HashSet<>(this.labWorks);
@@ -58,12 +77,23 @@ public class CollectionManager {
         return labWorks.getClass().getSimpleName();
     }
 
-    public ZonedDateTime getCollectionInitializationDateTime() {
+    public LocalDate getCollectionInitializationDateTime() {
         return collectionInitializationDateTime;
     }
 
     public int getSizeOfTheCollection()
     {
         return this.labWorks.size();
+    }
+
+    public String getCollectionFileName() {
+        return collectionFileName;
+    }
+    public String getCollectionFileName2() {
+        return "C:\\Users\\1\\Desktop\\scripts\\collection.xml";
+    }
+
+    public void setCollectionFileName(String collectionFileName) {
+        this.collectionFileName = collectionFileName;
     }
 }

@@ -1,10 +1,8 @@
 package client.commandexecutionresulthandlers.concrete;
 
 import client.commandexecutionresulthandlers.CommandExecutionResultHandler;
-import contract.CommandIdentifier;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.HelpCommandExecutionResultDTO;
-import contract.dto.commandexecutionresultdto.concrete.InfoCommandExecutionResultDTO;
 
 public class HelpCommandExecutionResultHandler implements CommandExecutionResultHandler {
     @Override

@@ -7,8 +7,9 @@ import client.commandexecutionresulthandlers.*;
 import client.commandexecutionresulthandlers.concrete.*;
 import client.io.ConsoleReader;
 import client.io.ConsoleWriter;
-import contract.dto.commandexecutionresultdto.concrete.SaveCommandExecutionResultDTO;
+import contract.CommandName;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,32 +29,53 @@ public class ClientInitializer {
         return new ConsoleWriter(System.out);
     }
 
-    static public Map<String, CommandDTOBuilder>  initializeCommandDTOBuilders(ConsoleReader consoleReader, ConsoleWriter consoleWriter)
+    static public Map<CommandName, CommandDTOBuilder>  initializeCommandDTOBuilders(ConsoleReader consoleReader, ConsoleWriter consoleWriter)
     {
-        Map<String, CommandDTOBuilder> commandDTOBuilders = new HashMap<>();
-        commandDTOBuilders.put("help", new HelpCommandDTOBuilder());
-        commandDTOBuilders.put("add", new AddCommandDTOBuilder(consoleReader, consoleWriter));
-        commandDTOBuilders.put("show", new ShowCommandDTOBuilder());
-        commandDTOBuilders.put("info", new InfoCommandDTOBuilder());
-        commandDTOBuilders.put("clear", new ClearCommandDTOBuilder());
-        commandDTOBuilders.put("save", new SaveCommandDTOBuilder());
-        commandDTOBuilders.put("remove_by_id", new RemoveByIdCommandDTOBuilder(consoleReader, consoleWriter));
-        commandDTOBuilders.put("update", new UpdateCommandDTOBuilder(consoleReader, consoleWriter));
-        commandDTOBuilders.put("execute_script", new ExecuteScriptCommandDTOBuilder(commandDTOBuilders));
+        Map<CommandName, CommandDTOBuilder> commandDTOBuilders = new HashMap<>();
+        commandDTOBuilders.put(CommandName.help, new HelpCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.add, new AddCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put(CommandName.show, new ShowCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.info, new InfoCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.clear, new ClearCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.save, new SaveCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.remove_by_id, new RemoveByIdCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put(CommandName.update, new UpdateCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put(CommandName.execute_script, new ExecuteScriptCommandDTOBuilder(commandDTOBuilders));
+
+        commandDTOBuilders.put(CommandName.remove_greater, new RemoveGreaterCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put(CommandName.remove_lower, new RemoveLowerCommandDTOBuilder(consoleReader, consoleWriter));
+        commandDTOBuilders.put(CommandName.exit, new ExitCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.history, new HistoryCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.sum_of_tuned_in_works, new SumOfTunedInWorksCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.print_ascending, new PrintAscendingCommandDTOBuilder());
+        commandDTOBuilders.put(CommandName.print_field_descending_difficulty, new PrintFieldDescendingDifficultyCommandDTOBuilder());
+
         return commandDTOBuilders;
     }
 
-    static public  Map<String, CommandExecutionResultHandler> initializeCommandExecutionResultDTOHandlers()
+    static public  Map<String, CommandExecutionResultHandler> initializeCommandExecutionResultDTOHandlers(ArrayDeque<CommandName> history)
     {
         Map<String, CommandExecutionResultHandler> commandExecutionResultDTOHandlers = new HashMap<>();
         commandExecutionResultDTOHandlers.put("help", new HelpCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("info", new InfoCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("show", new ShowCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("save", new SaveCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("clear", new ClearCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("add", new AddCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("remove_by_id", new RemoveByIdCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("update", new UpdateCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("history", new HistoryCommandExecutionResultHandler(history));
         commandExecutionResultDTOHandlers.put("execute_script", new ExecuteScriptCommandExecutionResultHandler(commandExecutionResultDTOHandlers));
+
+        commandExecutionResultDTOHandlers.put("remove_greater", new RemoveGreaterCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("remove_lower", new RemoveLowerCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("exit", new ExitCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("history", new HistoryCommandExecutionResultHandler(history));
+        commandExecutionResultDTOHandlers.put("sum_of_tuned_in_works", new SumOfTunedInWorksCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("print_ascending", new PrintAscendingCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommandExecutionResultHandler());
+
+
         return commandExecutionResultDTOHandlers;
     }
 
@@ -67,9 +89,9 @@ public class ClientInitializer {
         return new CommandSenderToTheServer();
     }
 
-    static public OutputStringBuilder initializeOutputStringBuilder()
+    static public OutputStringBuilder initializeOutputStringBuilder(ArrayDeque<CommandName> history)
     {
-        return new OutputStringBuilder();
+        return new OutputStringBuilder(history);
     }
 
 }

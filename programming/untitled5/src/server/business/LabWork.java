@@ -1,6 +1,6 @@
 package server.business;
 
-public class LabWork {
+public class LabWork implements Comparable<LabWork>{
     private int id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -46,5 +46,19 @@ public class LabWork {
                 ", difficulty=" + difficulty +
                 ", discipline=" + discipline +
                 '}';
+    }
+
+    public Difficulty getDifficulty()
+    {
+        return this.difficulty;
+    }
+
+    public long getTunedInWorks() {
+        return tunedInWorks;
+    }
+
+    @Override
+    public int compareTo(LabWork o) {
+        return this.name.compareTo(o.name);
     }
 }

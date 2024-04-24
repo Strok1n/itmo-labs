@@ -1,27 +1,30 @@
 package client.commanddtobuilders.concrete;
 
 import client.commanddtobuilders.CommandDTOBuilder;
+import client.exceptions.InvalidCommandArgumentsInScriptFileException;
 import client.io.ConsoleReader;
 import client.io.ConsoleWriter;
-import client.exceptions.InvalidCommandArgumentsInScriptFileException;
 import client.util.FieldValidators;
 import client.util.LabWorkFieldValuesGetter;
 import client.util.StringIterator;
-import contract.dto.commanddto.concrete.AddCommandDTO;
 import contract.dto.commanddto.CommandDTO;
+import contract.dto.commanddto.concrete.AddCommandDTO;
+import contract.dto.commanddto.concrete.ExitCommandDTO;
+import contract.dto.commanddto.concrete.RemoveGreaterCommandDTO;
 
-public class AddCommandDTOBuilder implements CommandDTOBuilder
-{
+public class RemoveGreaterCommandDTOBuilder implements CommandDTOBuilder {
+
     private final LabWorkFieldValuesGetter labWorkFieldValuesGetter;
 
-    public AddCommandDTOBuilder(ConsoleReader consoleReader, ConsoleWriter consoleWriter)
+    public RemoveGreaterCommandDTOBuilder(ConsoleReader consoleReader, ConsoleWriter consoleWriter)
     {
         this.labWorkFieldValuesGetter = new LabWorkFieldValuesGetter(consoleReader, consoleWriter);
     }
 
     @Override
-    public CommandDTO buildCommandDTO(String[] commandArguments)
-    {
+    public CommandDTO buildCommandDTO(String[] commandArguments) {
+
+
         String labWorkName = labWorkFieldValuesGetter.getLabWorkName();
         int labWorkCoordinatesX = labWorkFieldValuesGetter.getLabWorkCoordinatesX();
         Integer labWorkCoordinatesY = labWorkFieldValuesGetter.getLabWorkCoordinatesY();
@@ -31,7 +34,8 @@ public class AddCommandDTOBuilder implements CommandDTOBuilder
         String disciplineName = labWorkFieldValuesGetter.getLabWorkDisciplineName();
         int disciplineLabsCount = labWorkFieldValuesGetter.getLabWorkDisciplineLabsCount();
 
-        return new AddCommandDTO(labWorkName,
+
+        return new RemoveGreaterCommandDTO(labWorkName,
                 labWorkCoordinatesX,
                 labWorkCoordinatesY,
                 minimalPoint,
@@ -54,13 +58,13 @@ public class AddCommandDTOBuilder implements CommandDTOBuilder
         String disciplineLabsCountString = fileStrings[stringIterator.increment()].trim();
         if (
                 !FieldValidators.validateLabWorkName(labWorkNameString) ||
-                !FieldValidators.validateLabWorkCoordinatesX(labWorkCoordinatesXString) ||
-                !FieldValidators.validateLabWorkCoordinatesY(labWorkCoordinatesYString) ||
-                !FieldValidators.validateLabWorkMinimalPoint(minimalPointString) ||
-                !FieldValidators.validateLabWorkTunedInWorks(tunedInWorksString) ||
-                !FieldValidators.validateLabWorkDifficulty(difficultyString) ||
-                !FieldValidators.validateLabWorkDisciplineName(disciplineNameString) ||
-                !FieldValidators.validateLabWorkDisciplineLabsCount(disciplineLabsCountString)
+                        !FieldValidators.validateLabWorkCoordinatesX(labWorkCoordinatesXString) ||
+                        !FieldValidators.validateLabWorkCoordinatesY(labWorkCoordinatesYString) ||
+                        !FieldValidators.validateLabWorkMinimalPoint(minimalPointString) ||
+                        !FieldValidators.validateLabWorkTunedInWorks(tunedInWorksString) ||
+                        !FieldValidators.validateLabWorkDifficulty(difficultyString) ||
+                        !FieldValidators.validateLabWorkDisciplineName(disciplineNameString) ||
+                        !FieldValidators.validateLabWorkDisciplineLabsCount(disciplineLabsCountString)
         ){
             throw new InvalidCommandArgumentsInScriptFileException();
         }
@@ -74,7 +78,7 @@ public class AddCommandDTOBuilder implements CommandDTOBuilder
         String disciplineName = disciplineNameString;
         int disciplineLabsCount = Integer.parseInt(disciplineLabsCountString);
 
-        return new AddCommandDTO(labWorkName,
+        return new RemoveGreaterCommandDTO(labWorkName,
                 labWorkCoordinatesX,
                 labWorkCoordinatesY,
                 minimalPoint,
@@ -83,5 +87,5 @@ public class AddCommandDTOBuilder implements CommandDTOBuilder
                 disciplineName,
                 disciplineLabsCount);
     }
-
 }
+

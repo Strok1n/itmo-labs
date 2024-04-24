@@ -3,6 +3,7 @@ package client.commanddtobuilders.concrete;
 import client.commanddtobuilders.CommandDTOBuilder;
 import client.exceptions.InvalidCommandArgumentsInScriptFileException;
 import client.util.StringIterator;
+import contract.CommandName;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.ExecuteScriptCommandDTO;
 
@@ -15,9 +16,9 @@ import java.util.*;
 
 public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
 
-    private final Map<String, CommandDTOBuilder> commandDTOBuilders;
+    private final Map<CommandName, CommandDTOBuilder> commandDTOBuilders;
 
-    public ExecuteScriptCommandDTOBuilder(Map<String, CommandDTOBuilder> commandDTOBuilders){
+    public ExecuteScriptCommandDTOBuilder(Map<CommandName, CommandDTOBuilder> commandDTOBuilders){
         this.commandDTOBuilders = commandDTOBuilders;
     }
 
@@ -61,7 +62,8 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
                 }
 
             commandDTOList.add(this.commandDTOBuilders.get(
-                    commandName.trim()).buildCommandDTOFromScript(fileStrings, stringIterator, arguments[0] ));
+                    CommandName.valueOf(commandName.trim()))
+                    .buildCommandDTOFromScript(fileStrings, stringIterator, arguments[0] ));
 
             }
 
@@ -106,8 +108,9 @@ public class ExecuteScriptCommandDTOBuilder implements CommandDTOBuilder {
                     arguments[0] = "mint";
                 }
                 commandDTOList.add(this.commandDTOBuilders.get(
-                        commandName.trim()
-                ).buildCommandDTOFromScript(fileStrings, stringIterator1, arguments[0] ));
+                        CommandName.valueOf(commandName.trim()))
+
+                        .buildCommandDTOFromScript(fileStrings, stringIterator1, arguments[0] ));
 
             }
         }catch (InvalidCommandArgumentsInScriptFileException invalidCommandArgumentsInScriptFileException)
