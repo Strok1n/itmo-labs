@@ -16,13 +16,15 @@ public class CommandSenderToTheServer
 
 
 
-        // byte arr[] = {0,1,2,3,4,5,6,7,8,9};
-        byte[] arr = new byte[2000];
 
+
+        // byte arr[] = {0,1,2,3,4,5,6,7,8,9};
+
+        byte[] arr = new byte[2000];
         byte[] arr3 = serialize(commandDTO);
 
-
-        for (int j = 0; j < Math.min(arr.length, arr3.length); j++) {
+        for (int j = 0; j < Math.min(arr.length, arr3.length); j++)
+        {
             arr[j] = arr3[j];
             System.out.println(arr3[j]);
         }
@@ -36,14 +38,20 @@ public class CommandSenderToTheServer
 
         addr = new InetSocketAddress(host,80);
         dc = DatagramChannel.open();
+
+
+        //dc.configureBlocking(true);
+
+
         buf = ByteBuffer.wrap(arr);
+
+
 
         dc.send(buf, addr);
 
         buf.clear();
         addr = dc.receive(buf);
         for (byte j : arr) {    System.out.println(j); }
-
         Object received = deserialize(arr);
         System.out.println(received);
 
