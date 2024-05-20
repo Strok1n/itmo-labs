@@ -9,9 +9,7 @@ import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Client
 {
@@ -33,7 +31,7 @@ public class Client
         this.commandSenderToTheServer = ClientInitializer.initializeCommandSenderToTheServer();
         this.outputStringBuilder = ClientInitializer.initializeOutputStringBuilder(history);
     }
-    public void start()  {
+    public void start() throws InterruptedException {
         try
         {
             while (true)
@@ -54,18 +52,57 @@ public class Client
 
                     for (CommandDTO cmdDTO: commandDTOExtractor.getCommandDTOList())
                     {
-                        CommandExecutionResultDTO commandExecutionResultDTO = this.commandSenderToTheServer.sendCommandDTOToTheServer(cmdDTO);
-                        String outputString = this.outputStringBuilder.buildOutputString(commandExecutionResultDTO);
-                        history.add(CommandName.valueOf(commandExecutionResultDTO.getCommandName()));
-                        if (history.size() > 8)
-                            history.removeFirst();
-                        this.consoleWriter.printlnToTheOutputStream(outputString);
+                        //CommandExecutionResultDTO commandExecutionResultDTO = this.commandSenderToTheServer.sendCommandDTOToTheServer(cmdDTO);
+                        CommandSenderToTheServer sender = this.commandSenderToTheServer;
+                        OutputStringBuilder builder = this.outputStringBuilder;
+                        ConsoleWriter writer = this.consoleWriter;
+                        Timer timer = new Timer();
+
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+
+                                    Timer timer1 = new Timer();
+                                    timer1.schedule(new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            consoleWriter.printlnToTheOutputStream(
+                                                    "Время ожидания ответа сервера истекло. Команда " + commandDTO.getCommandName()
+                                                            +" не выполнена"
+                                            );
+                                            consoleWriter.printlnToTheOutputStream("Введите команду:");
+                                        }
+                                    }, 5000);
+
+
+                                    CommandExecutionResultDTO result =
+                                            sender.sendCommandDTOToTheServer(commandDTO);
+
+                                    timer1.cancel();
+                                    String str = builder.buildOutputString(result);
+                                    consoleWriter.printlnToTheOutputStream(str);
+                                    consoleWriter.printlnToTheOutputStream("Введите команду:");
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        };
+
+
+                        timer.schedule(task, 0);
+                       // task.wait();
+
+
+                        //String outputString = this.outputStringBuilder.buildOutputString(commandExecutionResultDTO);
+                      //  history.add(CommandName.valueOf(commandExecutionResultDTO.getCommandName()));
+                       // if (history.size() > 8)
+                         //   history.removeFirst();
+                      //  this.consoleWriter.printlnToTheOutputStream(outputString);
                     }
                 }catch (IllegalArgumentException illegalArgumentException)
                 {
                     this.consoleWriter.printlnToTheOutputStream("Неизвестная команда");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
             }
         }

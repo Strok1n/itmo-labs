@@ -11,6 +11,7 @@ import server.commandexecutors.concrete.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +25,10 @@ public class ServerInitializer {
 
         //String initFileName = System.getenv("file_name");
       //  String initFileName = "C:\\Users\\1\\Desktop\\scripts\\collection.xml";
-        String initFileName2 = "C:\\Users\\1\\Desktop\\scripts\\collection.xml";
+        //String initFileName2 = "C:\\Users\\1\\Desktop\\scripts\\collection.xml";
+        String initFileName2 =
+              Paths.get("").toAbsolutePath().toString()
+        +File.separator    + "collection.xml";
 
 //        BufferedInputStream bufferedInputStream = new BufferedInputStream(
 //                new FileInputStream(initFileName)

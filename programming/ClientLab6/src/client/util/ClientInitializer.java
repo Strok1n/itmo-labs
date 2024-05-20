@@ -40,11 +40,13 @@ public class ClientInitializer {
         commandDTOBuilders.put(CommandName.show, new ShowCommandDTOBuilder());
         commandDTOBuilders.put(CommandName.info, new InfoCommandDTOBuilder());
         commandDTOBuilders.put(CommandName.clear, new ClearCommandDTOBuilder());
-        commandDTOBuilders.put(CommandName.save, new SaveCommandDTOBuilder());
+
+        // убрать команду save
+        //commandDTOBuilders.put(CommandName.save, new SaveCommandDTOBuilder());
+
         commandDTOBuilders.put(CommandName.remove_by_id, new RemoveByIdCommandDTOBuilder(consoleReader, consoleWriter));
         commandDTOBuilders.put(CommandName.update, new UpdateCommandDTOBuilder(consoleReader, consoleWriter));
         commandDTOBuilders.put(CommandName.execute_script, new ExecuteScriptCommandDTOBuilder(commandDTOBuilders));
-
         commandDTOBuilders.put(CommandName.remove_greater, new RemoveGreaterCommandDTOBuilder(consoleReader, consoleWriter));
         commandDTOBuilders.put(CommandName.remove_lower, new RemoveLowerCommandDTOBuilder(consoleReader, consoleWriter));
         commandDTOBuilders.put(CommandName.exit, new ExitCommandDTOBuilder());

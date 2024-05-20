@@ -9,7 +9,7 @@ public enum CommandName
     update,
     remove_by_id,
     clear,
-    save,
+  //  save,
     execute_script,
     exit,
     remove_greater,

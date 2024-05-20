@@ -1,6 +1,7 @@
 package server;
 
 import contract.dto.commanddto.CommandDTO;
+import contract.dto.commanddto.concrete.SaveCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import server.commandexecutors.CommandExecutor;
 import server.util.ServerInitializer;
@@ -30,5 +31,9 @@ public class Server {
     }
 
 
+    public void save()
+    {
+        this.commandExecutors.get("save").execute(new SaveCommandDTO());
+    }
 
 }

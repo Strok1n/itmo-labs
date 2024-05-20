@@ -12,9 +12,11 @@ import server.business.LabWork;
 import server.commandexecutors.CommandExecutor;
 import server.util.LocalDateTypeAdapter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -66,7 +68,8 @@ public class SaveCommandExecutor implements CommandExecutor {
         String result = "Коллекция успешно сохранена в файл";
         try {
 
-            FileWriter fileWriter = new FileWriter("C:\\Users\\1\\Desktop\\scripts\\collection.xml");
+            FileWriter fileWriter = new FileWriter(Paths.get("").toAbsolutePath().toString()
+                    + File.separator    + "collection.xml");
 
             fileWriter.write(xmlOutput);
             fileWriter.close();

@@ -9,6 +9,8 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CommandSenderToTheServer
 {
@@ -26,17 +28,18 @@ public class CommandSenderToTheServer
         for (int j = 0; j < Math.min(arr.length, arr3.length); j++)
         {
             arr[j] = arr3[j];
-            System.out.println(arr3[j]);
+      //      System.out.println(arr3[j]);
         }
 
 
         int len = arr.length; DatagramChannel dc;
         ByteBuffer buf;
-        InetAddress host = InetAddress.getLocalHost(); int port;
+        InetAddress host = InetAddress.getLocalHost(); int port = 7341;
         SocketAddress addr;
 
-
-        addr = new InetSocketAddress(host,80);
+        host = InetAddress.getByName(  "helios.cs.ifmo.ru");
+        //host = InetAddress.getLocalHost();
+        addr = new InetSocketAddress(host,7341);
         dc = DatagramChannel.open();
 
 
@@ -50,11 +53,24 @@ public class CommandSenderToTheServer
         dc.send(buf, addr);
 
         buf.clear();
-        addr = dc.receive(buf);
-        for (byte j : arr) {    System.out.println(j); }
-        Object received = deserialize(arr);
-        System.out.println(received);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                try {
+//                    dc.receive(buf);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }, 0);
 
+
+        addr = dc.receive(buf);
+
+      //  for (byte j : arr) {    System.out.println(j); }
+        Object received = deserialize(arr);
+       // System.out.println(received);
       //  return Server.serverEntryPoint.response(commandDTO);
         return (CommandExecutionResultDTO) received;
     }
