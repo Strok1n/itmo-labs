@@ -1,5 +1,9 @@
+import contract.dto.CommandDTOWrapper;
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
+import contract.dto.commanddto.concrete.RegisterCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.RegisterCommandExecutionResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import server.Server;
@@ -8,13 +12,52 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 
 public class Main {
+
+    static public Connection connection;
+
     public static void main(String[] args) throws IOException {
 
-        byte arr[] = new byte[2000];
+
+        try {
+             connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/studs",
+                    "root"
+                    ,"1234"
+            );
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Server.connection = connection;
+        new Server();
+
+
+        String sql = "select id from User";
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            int nId=0;
+
+            if(rs.next())
+                nId = rs.getInt(1);
+            System.out.println(nId);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+        byte arr[] = new byte[13000];
         int len = arr.length;
         DatagramChannel dc;
         ByteBuffer buf;
@@ -67,13 +110,13 @@ public class Main {
 //                arr[j] *= 3;
 //            }
 
-            byte[] arr1 = new byte[2000];
+            byte[] arr1 = new byte[13000];
             for (int i = 0; i < arr.length; i++) {
                 arr1[i] = arr[i];
             }
             ByteBuffer buf1 = ByteBuffer.wrap(arr1);
            // buf1.flip();
-            buf1.position(2000);
+            buf1.position(13000);
             SocketAddress addr1 = addr;
 
             ForkJoinPool forkJoinPool = ForkJoinPool.commonPool();
@@ -85,11 +128,74 @@ public class Main {
                     @Override
                     public void run() {
 
-                        CommandDTO commandDTO = (CommandDTO) deserialize(arr1);
-                        CommandExecutionResultDTO commandExecutionResultDTO = Server.server.response(commandDTO);
-                        // System.out.println(commandExecutionResultDTO.getCommandName());
+                        // CommandDTO commandDTO = (CommandDTO) deserialize(arr1);
+                        CommandDTOWrapper wrapper = (CommandDTOWrapper) deserialize(arr1);
+
+                        CommandDTO commandDTO = wrapper.getCommandDTO();
+
+                        if (commandDTO instanceof RegisterCommandDTO)
+                        {
+                            try {
+                                PreparedStatement ps = connection.prepareStatement("" +
+                                        "INSERT INTO User (name, password) VALUES (?, ?);");
+                                ps.setString(1, wrapper.getUser());
+                                ps.setString(2, wrapper.getPwd());
+                                ps.execute();
+
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+
+
+
+                        try {
+                            PreparedStatement ps = connection.prepareStatement( "SELECT id\n" +
+                                    "FROM User\n" +
+                                    "WHERE EXISTS (SELECT id FROM User WHERE User.name = ? AND User.password = ?);");
+                            ps.setString(1, wrapper.getUser());
+                            ps.setString(2, wrapper.getPwd());
+                           ResultSet set = ps.executeQuery();
+                            System.out.println(set.isBeforeFirst());
+                            if (!set.isBeforeFirst())
+                            {
+                                wrapper.setUserExists(false);
+                                if (wrapper.getCommandDTO() instanceof RegisterCommandDTO)
+                                    wrapper.setUserExists(true);
+                            }else {
+                                wrapper.setUserExists(true);
+                            }
+
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+                        CommandExecutionResultDTO commandExecutionResultDTO; //= Server.server.response(commandDTO);
                         Logger logger = LoggerFactory.getLogger(Server.server.getClass());
-                        logger.info("Команда {} выполнена", commandExecutionResultDTO.getCommandName());
+                        if (wrapper.isUserExists()) {
+
+                            CommandExecutionResultDTOWrapper commandExecutionResultDTOWrapper = Server.server.response(commandDTO, wrapper.getUser(), wrapper.getPwd());
+
+                            commandExecutionResultDTO = commandExecutionResultDTOWrapper.getCommandExecutionResultDTO();
+
+                            if (commandExecutionResultDTOWrapper.isDataMutationLegal())
+                            {
+                                logger.info("Команда {} выполнена", wrapper.getCommandDTO().getCommandName());
+                            }else {
+                                logger.info("Команда {} не выполнена, так как операция изменяет данные, к которым у пользователя нет досутпа", wrapper.getCommandDTO().getCommandName());
+                            }
+
+                        }
+                        else {
+                            commandExecutionResultDTO = new RegisterCommandExecutionResultDTO("" +
+                                    "Команда не выполнена, так как пользователь не зарегистрирован");
+                            logger.info("Команда {} не выполнена, так как пользователь не зарегистрирован", wrapper.getCommandDTO().getCommandName());
+                        }
+                        // System.out.println(commandExecutionResultDTO.getCommandName());
+                       //  Logger logger = LoggerFactory.getLogger(Server.server.getClass());
+                        //logger.info("Команда {} выполнена", commandExecutionResultDTO.getCommandName());
                         byte[] arr2 = serialize(commandExecutionResultDTO);
                         for (int j = 0; j < Math.min(len, arr2.length); j++) {
                             arr1[j] = arr2[j];
@@ -114,6 +220,8 @@ public class Main {
                         Arrays.fill(arr1, (byte) 0);
 
                     }
+
+
                 } ;
 
 

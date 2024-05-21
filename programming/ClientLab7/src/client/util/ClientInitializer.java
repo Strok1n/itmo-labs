@@ -55,6 +55,9 @@ public class ClientInitializer {
         commandDTOBuilders.put(CommandName.print_ascending, new PrintAscendingCommandDTOBuilder());
         commandDTOBuilders.put(CommandName.print_field_descending_difficulty, new PrintFieldDescendingDifficultyCommandDTOBuilder());
 
+
+        commandDTOBuilders.put(CommandName.register, new RegisterCommandDTOBuilder());
+
         return commandDTOBuilders;
     }
 
@@ -79,6 +82,7 @@ public class ClientInitializer {
         commandExecutionResultDTOHandlers.put("sum_of_tuned_in_works", new SumOfTunedInWorksCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("print_ascending", new PrintAscendingCommandExecutionResultHandler());
         commandExecutionResultDTOHandlers.put("print_field_descending_difficulty", new PrintFieldDescendingDifficultyCommandExecutionResultHandler());
+        commandExecutionResultDTOHandlers.put("register", new RegisterCommandExecutionResultHandler());
 
 
         return commandExecutionResultDTOHandlers;

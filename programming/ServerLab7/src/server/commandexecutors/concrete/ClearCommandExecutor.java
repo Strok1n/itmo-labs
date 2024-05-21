@@ -1,12 +1,13 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.ClearCommandExecutionResultDTO;
 import server.CollectionManager;
 import server.commandexecutors.CommandExecutor;
 
-public class ClearCommandExecutor implements CommandExecutor {
+public class ClearCommandExecutor extends CommandExecutor {
     final private CollectionManager collectionManager;
 
 
@@ -15,9 +16,10 @@ public class ClearCommandExecutor implements CommandExecutor {
         this.collectionManager = collectionManager;
     }
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO)
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO)
     {
         this.collectionManager.clear();
-        return new ClearCommandExecutionResultDTO();
+        return new CommandExecutionResultDTOWrapper(
+                new ClearCommandExecutionResultDTO(),true);
     }
 }

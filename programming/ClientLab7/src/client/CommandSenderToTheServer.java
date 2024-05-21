@@ -22,7 +22,7 @@ public class CommandSenderToTheServer
 
         // byte arr[] = {0,1,2,3,4,5,6,7,8,9};
 
-        byte[] arr = new byte[2000];
+        byte[] arr = new byte[13000];
         byte[] arr3 = serialize(commandDTO);
 
         for (int j = 0; j < Math.min(arr.length, arr3.length); j++)

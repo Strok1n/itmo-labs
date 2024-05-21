@@ -1,6 +1,7 @@
 package server.commandexecutors.concrete;
 
 import contract.CommandName;
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.HelpCommandExecutionResultDTO;
@@ -9,9 +10,9 @@ import server.commandexecutors.CommandExecutor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HelpCommandExecutor implements CommandExecutor {
+public class HelpCommandExecutor extends CommandExecutor {
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO) {
         Map<CommandName, String> helpMap = new HashMap<>();
         helpMap.put(CommandName.help, "help: вывести справку по доступным командам");
         helpMap.put(CommandName.info, "info: вывести в стандартный поток вывода информацию о коллекции");
@@ -29,6 +30,6 @@ public class HelpCommandExecutor implements CommandExecutor {
 //        helpMap.put(CommandName.sum_of_tuned_in_works, "sum_of_tuned_in_works: вывести сумму значений поля tunedInWorks для всех элементов коллекции");
 ////        helpMap.put(CommandName.print_ascending, "print_ascending: вывести элементы коллекции в порядке возрастания");
 //        helpMap.put(CommandName.print_field_descending_difficulty, "print_field_descending_difficulty: вывести значения поля difficulty всех элементов в порядке убывания");
-        return new HelpCommandExecutionResultDTO(helpMap);
+        return new CommandExecutionResultDTOWrapper(new HelpCommandExecutionResultDTO(helpMap), true);
     }
 }

@@ -1,5 +1,6 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.ShowCommandExecutionResultDTO;
@@ -10,7 +11,7 @@ import server.commandexecutors.CommandExecutor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShowCommandExecutor implements CommandExecutor {
+public class ShowCommandExecutor extends CommandExecutor {
 
 
     final private CollectionManager collectionManager;
@@ -21,14 +22,14 @@ public class ShowCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO) {
 
         List<String> collectionElements = new ArrayList<>();
 
         for (LabWork labWork : collectionManager.getCollectionCopy())
             collectionElements.add(labWork.toString());
 
-        return new ShowCommandExecutionResultDTO(collectionElements);
+        return new CommandExecutionResultDTOWrapper(new ShowCommandExecutionResultDTO(collectionElements), true);
     }
 
 }

@@ -1,5 +1,6 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.ExecuteScriptCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ExecuteScriptCommandExecutor implements CommandExecutor {
+public class ExecuteScriptCommandExecutor extends CommandExecutor {
 
     final private Map<String, CommandExecutor> commandExecutors;
 
@@ -20,7 +21,7 @@ public class ExecuteScriptCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO)
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO)
     {
         ExecuteScriptCommandDTO executeScriptCommandDTO = (ExecuteScriptCommandDTO) commandDTO;
 
@@ -34,8 +35,8 @@ public class ExecuteScriptCommandExecutor implements CommandExecutor {
                     );
         }
 
-        return new ExecuteScriptCommandExecutionResultDTO(
+        return new CommandExecutionResultDTOWrapper(new ExecuteScriptCommandExecutionResultDTO(
                 commandExecutionResultDTOList
-        );
+        ), true);
     }
 }

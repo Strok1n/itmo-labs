@@ -5,10 +5,14 @@ import client.io.ConsoleWriter;
 import client.util.ClientInitializer;
 import client.util.CommandDTOExtractor;
 import contract.CommandName;
+import contract.dto.CommandDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class Client
@@ -44,6 +48,12 @@ public class Client
                     CommandName commandName = this.getCommandNameFromInputString(input);
                     String[] commandArguments = this.getCommandArgumentsFromInputString(input);
 
+                    this.consoleWriter.printlnToTheOutputStream("Введите имя пользователя:");
+                    String userName = this.consoleReader.getNextLine();
+                    this.consoleWriter.printlnToTheOutputStream("Введите пароль:");
+                    String passwd = this.consoleReader.getNextLine();
+
+                    System.out.println(encryptThisString(passwd));
 
 
 
@@ -76,8 +86,14 @@ public class Client
                                     }, 5000);
 
 
+                                    CommandDTOWrapper wrapper =
+                                            new CommandDTOWrapper(userName,encryptThisString(passwd)
+                                                    ,commandDTO, false
+                                                    );
+//                                    CommandExecutionResultDTO result =
+//                                            sender.sendCommandDTOToTheServer(commandDTO);
                                     CommandExecutionResultDTO result =
-                                            sender.sendCommandDTOToTheServer(commandDTO);
+                                            sender.sendCommandDTOToTheServer(wrapper);
 
                                     timer1.cancel();
                                     String str = builder.buildOutputString(result);
@@ -215,7 +231,37 @@ public class Client
 
 
 
+    public static String encryptThisString(String input)
+    {
+        try {
+            // getInstance() method is called with algorithm SHA-384
+            MessageDigest md = MessageDigest.getInstance("SHA-384");
 
+            // digest() method is called
+            // to calculate message digest of the input string
+            // returned as array of byte
+            byte[] messageDigest = md.digest(input.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+
+            // Add preceding 0s to make it 32 bit
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+
+            // return the HashText
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

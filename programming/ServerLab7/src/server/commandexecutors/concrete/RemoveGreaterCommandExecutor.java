@@ -1,5 +1,6 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.RemoveGreaterCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
@@ -13,7 +14,7 @@ import server.commandexecutors.CommandExecutor;
 
 import java.time.LocalDate;
 
-public class RemoveGreaterCommandExecutor implements CommandExecutor {
+public class RemoveGreaterCommandExecutor extends CommandExecutor {
 
     final private CollectionManager collectionManager;
 
@@ -22,7 +23,7 @@ public class RemoveGreaterCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO) {
         RemoveGreaterCommandDTO removeGreaterCommandDTO = (RemoveGreaterCommandDTO) commandDTO;
 
         LabWork labWork = new LabWork(
@@ -48,7 +49,8 @@ public class RemoveGreaterCommandExecutor implements CommandExecutor {
 
         String commandExecutionResultMessage = "Из коллекции было удалено " + (size1 - size2) + " элементов";
 
-        return new RemoveGreaterCommandExecutionResultDTO(commandExecutionResultMessage);
+        return new CommandExecutionResultDTOWrapper(
+                new RemoveGreaterCommandExecutionResultDTO(commandExecutionResultMessage), true);
 
 
     }

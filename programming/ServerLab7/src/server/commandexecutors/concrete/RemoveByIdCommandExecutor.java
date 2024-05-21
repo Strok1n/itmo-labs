@@ -1,5 +1,6 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.RemoveByIdCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
@@ -7,7 +8,7 @@ import contract.dto.commandexecutionresultdto.concrete.RemoveByIdCommandExecutio
 import server.CollectionManager;
 import server.commandexecutors.CommandExecutor;
 
-public class RemoveByIdCommandExecutor implements CommandExecutor {
+public class RemoveByIdCommandExecutor extends CommandExecutor {
 
     final private CollectionManager collectionManager;
 
@@ -18,9 +19,9 @@ public class RemoveByIdCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO){
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO){
         RemoveByIdCommandDTO removeByIdCommandDTO = (RemoveByIdCommandDTO) commandDTO;
-        return new RemoveByIdCommandExecutionResultDTO(this.collectionManager.removeById(removeByIdCommandDTO.getId()),
-                removeByIdCommandDTO.getId());
+        return new  CommandExecutionResultDTOWrapper(new RemoveByIdCommandExecutionResultDTO(this.collectionManager.removeById(removeByIdCommandDTO.getId()),
+                removeByIdCommandDTO.getId()), true);
     }
 }

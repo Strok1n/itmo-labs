@@ -2,6 +2,7 @@ package server.commandexecutors.concrete;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.SaveCommandExecutionResultDTO;
@@ -20,7 +21,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class SaveCommandExecutor implements CommandExecutor {
+public class SaveCommandExecutor extends CommandExecutor {
     final private CollectionManager collectionManager;
     public SaveCommandExecutor(CollectionManager collectionManager)
     {
@@ -28,7 +29,7 @@ public class SaveCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO)
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO)
     {
         Set<LabWork> labWorks = this.collectionManager.getCollectionCopy();
 
@@ -87,6 +88,6 @@ public class SaveCommandExecutor implements CommandExecutor {
             throw new RuntimeException(e);
         }
 
-        return new SaveCommandExecutionResultDTO(result);
+        return new CommandExecutionResultDTOWrapper(new SaveCommandExecutionResultDTO(result), true);
     }
 }

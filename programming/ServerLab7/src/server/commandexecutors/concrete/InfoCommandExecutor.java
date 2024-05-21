@@ -1,12 +1,13 @@
 package server.commandexecutors.concrete;
 
+import contract.dto.CommandExecutionResultDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.InfoCommandExecutionResultDTO;
 import server.CollectionManager;
 import server.commandexecutors.CommandExecutor;
 
-public class InfoCommandExecutor implements CommandExecutor {
+public class InfoCommandExecutor extends CommandExecutor {
 
     final private CollectionManager collectionManager;
 
@@ -16,12 +17,12 @@ public class InfoCommandExecutor implements CommandExecutor {
     }
 
     @Override
-    public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+    public CommandExecutionResultDTOWrapper execute(CommandDTO commandDTO) {
 
-        return new InfoCommandExecutionResultDTO(
+        return new CommandExecutionResultDTOWrapper(new InfoCommandExecutionResultDTO(
                 this.collectionManager.getTypeOfTheCollection(),
                 this.collectionManager.getCollectionInitializationDateTime(),
                 this.collectionManager.getSizeOfTheCollection()
-        );
+        ),true);
     }
 }
