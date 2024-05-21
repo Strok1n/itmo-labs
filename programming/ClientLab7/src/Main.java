@@ -10,20 +10,12 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         Client client = ClientInitializer.initializeClient();
+       // client.start();
 
-        //client.start();
-
-
-        Thread thread = new Thread(()->{
-                client.handle("help");
-        client.handle("help");
-        client.handle("help");
-
-      ;});
-
-        while (true) {
-            client.handle("help");
+        while (true){
+            client.handle("info");
         }
+
     }
 
 }

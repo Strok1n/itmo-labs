@@ -37,7 +37,8 @@ public class CommandSenderToTheServer
         InetAddress host = InetAddress.getLocalHost(); int port = 7341;
         SocketAddress addr;
 
-       // host = InetAddress.getByName(  "helios.cs.ifmo.ru");
+        //host = InetAddress.getByName(  "helios.cs.ifmo.ru");
+
         host = InetAddress.getLocalHost();
         addr = new InetSocketAddress(host,7341);
         dc = DatagramChannel.open();

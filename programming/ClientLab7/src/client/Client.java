@@ -112,15 +112,34 @@ public class Client
           //  this.consoleWriter.printlnToTheOutputStream("Программа завершена из-за нажатия ctrl + D");
         }
     }
+    CommandName getCommandNameFromInputString(String inputString)
+    {
+        String[] tokens = inputString.split(" ");
+        return CommandName.valueOf(tokens[0].trim());
+    }
+    String[] getCommandArgumentsFromInputString(String inputString)
+    {
+        String[] tokens = inputString.split(" ");
+        String[] commandArguments = Arrays.copyOfRange(tokens, 1, tokens.length);
+        for (int i = 0; i < commandArguments.length; i++)
+            commandArguments[i] = commandArguments[i].trim();
+        return commandArguments;
+    }
 
 
-   public void handle(String command)
+
+
+
+
+
+
+    public void handle(String command)
     {
 
         try
         {
-           // this.consoleWriter.printlnToTheOutputStream("Введите команду:");
-           // String input = this.consoleReader.getNextLine();
+            // this.consoleWriter.printlnToTheOutputStream("Введите команду:");
+            // String input = this.consoleReader.getNextLine();
 
             CommandName commandName = this.getCommandNameFromInputString(command);
             String[] commandArguments = this.getCommandArgumentsFromInputString(command);
@@ -197,17 +216,7 @@ public class Client
 
 
 
-    CommandName getCommandNameFromInputString(String inputString)
-    {
-        String[] tokens = inputString.split(" ");
-        return CommandName.valueOf(tokens[0].trim());
-    }
-    String[] getCommandArgumentsFromInputString(String inputString)
-    {
-        String[] tokens = inputString.split(" ");
-        String[] commandArguments = Arrays.copyOfRange(tokens, 1, tokens.length);
-        for (int i = 0; i < commandArguments.length; i++)
-            commandArguments[i] = commandArguments[i].trim();
-        return commandArguments;
-    }
+
+
+
 }

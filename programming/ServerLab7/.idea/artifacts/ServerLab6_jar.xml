@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ServerLab6:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ServerLab6_jar</output-path>
+    <root id="archive" name="ServerLab6.jar">
+      <element id="module-output" name="ServerLab6" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.10/gson-2.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20240205/json-20240205.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/1.4.6/logback-classic-1.4.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/1.4.6/logback-core-1.4.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/2.0.4/slf4j-api-2.0.4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
