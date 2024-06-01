@@ -1,0 +1,50 @@
+use mydb;
+
+CREATE TABLE IF NOT EXISTS Users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Создание таблицы Coordinates
+CREATE TABLE IF NOT EXISTS Coordinates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    x INT NOT NULL,
+    y INT NOT NULL CHECK (y > -161)
+);
+
+-- Создание таблицы Discipline
+CREATE TABLE IF NOT EXISTS Discipline (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    labsCount INT NOT NULL
+);
+
+-- Создание типа Difficulty
+CREATE TABLE IF NOT EXISTS Difficulty (
+    value ENUM('VERY_EASY', 'EASY', 'VERY_HARD', 'INSANE') NOT NULL,
+    PRIMARY KEY (value)
+);
+
+-- Создание таблицы LabWork
+CREATE TABLE IF NOT EXISTS LabWork (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    creationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    minimalPoint DOUBLE NOT NULL CHECK (minimalPoint > 0),
+    tunedInWorks BIGINT NOT NULL,
+    difficulty ENUM('VERY_EASY', 'EASY', 'VERY_HARD', 'INSANE'),
+    discipline_id INT,
+    creator_id INT NOT NULL,
+    FOREIGN KEY (discipline_id) REFERENCES Discipline(id),
+    FOREIGN KEY (creator_id) REFERENCES Users(id)
+);
+
+-- Создание таблицы-ассоциации для связи многие ко многим между LabWork и Coordinates
+CREATE TABLE IF NOT EXISTS LabWork_Coordinates (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    labwork_id INT NOT NULL,
+    coordinates_id INT NOT NULL,
+    FOREIGN KEY (labwork_id) REFERENCES LabWork(id),
+    FOREIGN KEY (coordinates_id) REFERENCES Coordinates(id)
+);

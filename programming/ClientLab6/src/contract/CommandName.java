@@ -17,7 +17,8 @@ public enum CommandName
     history,
     sum_of_tuned_in_works,
     print_ascending,
-    print_field_descending_difficulty;
+    print_field_descending_difficulty,
+    register;
 
     @Override
     public String toString() {

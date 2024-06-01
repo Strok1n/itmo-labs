@@ -3,8 +3,10 @@ package server.commandexecutors.concrete;
 import contract.CommandName;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.AddCommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.HelpCommandExecutionResultDTO;
 import server.commandexecutors.CommandExecutor;
+import server.util.CommandDTOAfterDatabaseWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,12 @@ import java.util.Map;
 public class HelpCommandExecutor implements CommandExecutor {
     @Override
     public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+        CommandDTOAfterDatabaseWrapper wrapper = (CommandDTOAfterDatabaseWrapper) commandDTO;
+        if (!wrapper.isDatabaseOperationDone())
+            return new AddCommandExecutionResultDTO(wrapper.getMessage());
+
+
+        commandDTO = wrapper.getCommandDTO();
         Map<CommandName, String> helpMap = new HashMap<>();
         helpMap.put(CommandName.help, "help: вывести справку по доступным командам");
         helpMap.put(CommandName.info, "info: вывести в стандартный поток вывода информацию о коллекции");

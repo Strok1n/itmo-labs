@@ -3,6 +3,7 @@ package server.commandexecutors.concrete;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.RemoveGreaterCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.AddCommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.RemoveGreaterCommandExecutionResultDTO;
 import server.CollectionManager;
 import server.business.Coordinates;
@@ -10,6 +11,7 @@ import server.business.Difficulty;
 import server.business.Discipline;
 import server.business.LabWork;
 import server.commandexecutors.CommandExecutor;
+import server.util.CommandDTOAfterDatabaseWrapper;
 
 import java.time.LocalDate;
 
@@ -23,6 +25,17 @@ public class RemoveGreaterCommandExecutor implements CommandExecutor {
 
     @Override
     public CommandExecutionResultDTO execute(CommandDTO commandDTO) {
+        CommandDTOAfterDatabaseWrapper wrapper = (CommandDTOAfterDatabaseWrapper) commandDTO;
+        if (!wrapper.isDatabaseOperationDone())
+            return new AddCommandExecutionResultDTO(wrapper.getMessage());
+        commandDTO = wrapper.getCommandDTO();
+
+
+
+
+
+
+
         RemoveGreaterCommandDTO removeGreaterCommandDTO = (RemoveGreaterCommandDTO) commandDTO;
 
         LabWork labWork = new LabWork(

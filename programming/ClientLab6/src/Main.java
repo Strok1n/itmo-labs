@@ -11,19 +11,19 @@ public class Main {
 
         Client client = ClientInitializer.initializeClient();
 
-        //client.start();
+        client.start();
 
 
-        Thread thread = new Thread(()->{
-                client.handle("help");
-        client.handle("help");
-        client.handle("help");
-
-      ;});
-
-        while (true) {
-            client.handle("help");
-        }
+//        Thread thread = new Thread(()->{
+//                client.handle("help");
+//        client.handle("help");
+//        client.handle("help");
+//
+//      ;});
+//
+//        while (true) {
+//            client.handle("help");
+//        }
     }
 
 }

@@ -5,10 +5,14 @@ import client.io.ConsoleWriter;
 import client.util.ClientInitializer;
 import client.util.CommandDTOExtractor;
 import contract.CommandName;
+import contract.dto.CommandDTOWrapper;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class Client
@@ -39,12 +43,17 @@ public class Client
                 try
                 {
                     this.consoleWriter.printlnToTheOutputStream("Введите команду:");
-                    String input = this.consoleReader.getNextLine();
-
+                 //   String input = this.consoleReader.getNextLine();
+                    String input = "help";
                     CommandName commandName = this.getCommandNameFromInputString(input);
                     String[] commandArguments = this.getCommandArgumentsFromInputString(input);
 
-
+                    this.consoleWriter.printlnToTheOutputStream("Введите имя пользователя:");
+                   // String username = this.consoleReader.getNextLine().trim();
+                    String username = "1";
+                    this.consoleWriter.printlnToTheOutputStream("Введите пароль:");
+                  //  String password = encryptThisString(this.consoleReader.getNextLine().trim());
+                    String password = encryptThisString("1");
 
 
                     CommandDTO commandDTO = this.commandPreparerForSendingToTheServer.prepareCommandDTOForSending(commandName, commandArguments);
@@ -76,10 +85,18 @@ public class Client
                                     }, 5000);
 
 
+                                    CommandDTOWrapper wrapper =
+                                            new CommandDTOWrapper(username,password
+                                                    ,commandDTO, false
+                                            );
                                     CommandExecutionResultDTO result =
-                                            sender.sendCommandDTOToTheServer(commandDTO);
+                                            sender.sendCommandDTOToTheServer(wrapper);
+
+                                  //  CommandExecutionResultDTO result =
+                                      //      sender.sendCommandDTOToTheServer(commandDTO);
 
                                     timer1.cancel();
+
                                     String str = builder.buildOutputString(result);
                                     consoleWriter.printlnToTheOutputStream(str);
                                     consoleWriter.printlnToTheOutputStream("Введите команду:");
@@ -91,6 +108,8 @@ public class Client
 
 
                         timer.schedule(task, 0);
+
+
                        // task.wait();
 
 
@@ -210,4 +229,52 @@ public class Client
             commandArguments[i] = commandArguments[i].trim();
         return commandArguments;
     }
+
+
+
+
+
+
+
+
+    public static String encryptThisString(String input)
+    {
+        try {
+            // getInstance() method is called with algorithm SHA-384
+            MessageDigest md = MessageDigest.getInstance("SHA-384");
+
+            // digest() method is called
+            // to calculate message digest of the input string
+            // returned as array of byte
+            byte[] messageDigest = md.digest(input.getBytes());
+
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+
+            // Add preceding 0s to make it 32 bit
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+
+            // return the HashText
+            return hashtext;
+        }
+
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }

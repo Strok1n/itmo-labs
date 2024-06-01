@@ -3,6 +3,7 @@ package server.commandexecutors.concrete;
 import contract.dto.commanddto.CommandDTO;
 import contract.dto.commanddto.concrete.UpdateCommandDTO;
 import contract.dto.commandexecutionresultdto.CommandExecutionResultDTO;
+import contract.dto.commandexecutionresultdto.concrete.AddCommandExecutionResultDTO;
 import contract.dto.commandexecutionresultdto.concrete.UpdateCommandExecutionResultDTO;
 import server.CollectionManager;
 import server.business.Coordinates;
@@ -10,6 +11,7 @@ import server.business.Difficulty;
 import server.business.Discipline;
 import server.business.LabWork;
 import server.commandexecutors.CommandExecutor;
+import server.util.CommandDTOAfterDatabaseWrapper;
 
 import java.time.LocalDate;
 
@@ -25,6 +27,18 @@ public class UpdateCommandExecutor implements CommandExecutor {
 
     @Override
     public CommandExecutionResultDTO execute(CommandDTO commandDTO){
+        CommandDTOAfterDatabaseWrapper wrapper = (CommandDTOAfterDatabaseWrapper) commandDTO;
+        if (!wrapper.isDatabaseOperationDone())
+            return new AddCommandExecutionResultDTO(
+                    wrapper.getMessage()
+            );
+
+        commandDTO = wrapper.getCommandDTO();
+
+
+
+
+
         UpdateCommandDTO updateCommandDTO = (UpdateCommandDTO) commandDTO;
 
         if (this.collectionManager.removeById(updateCommandDTO.getId()))
@@ -46,4 +60,25 @@ public class UpdateCommandExecutor implements CommandExecutor {
         else
             return new UpdateCommandExecutionResultDTO(false, updateCommandDTO.getId());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
